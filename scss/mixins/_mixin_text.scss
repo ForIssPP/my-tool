@@ -1,0 +1,56 @@
+//---------------------------
+// 文本颜色 //
+
+// 颜色与字体大小
+@mixin c_fz($c: #7E50BD, $fz: .12rem) {
+    color: $c;
+    font-size: $fz;
+}
+// 颜色与文本对其
+@mixin c_ta($c: #7E50BD, $ta: center) {
+    color: $c;
+    text-align: $ta;
+}
+// 颜色与文本首行缩进
+@mixin c_ti($c: #7E50BD, $ti: .1rem) {
+    color: $c;
+    text-indent: $ti;
+}
+// 颜色与字符间距
+@mixin c_ls($c: #7E50BD, $lan: .1rem) {
+    color: $c;
+    letter-spacing: $lan;
+}
+// 颜色与行高
+@mixin c_lh($c: #7E50BD, $lh: .12rem) {
+    color: $c;
+    line-height: $lh;
+}
+// 颜色与字体加粗
+@mixin c_fw($c: #7E50BD, $fw: 500) {
+    color: $c;
+    font-weight: $fw;
+}
+//---------------------------
+// 字体大小 //
+
+// 字体大小与行高
+@mixin fz_lh($fz: .12rem, $lh: $fz) {
+    font-size: $fz;
+    line-height: $lh;
+}
+// 字体大小与文本对其
+@mixin fz_ta($fz: .12rem, $ta: center) {
+    font-size: $fz;
+    text-align: $ta;
+}
+// 字体大小与字符间距
+@mixin fz_ls($fz: .12rem, $lan: .1rem) {
+    font-size: $fz;
+    letter-spacing: $lan;
+}
+// 字体大小与文本首行缩进
+@mixin fz_ti($fz: .12rem, $ti: .1rem) {
+    font-size: $fz;
+    text-indent: $ti;
+}

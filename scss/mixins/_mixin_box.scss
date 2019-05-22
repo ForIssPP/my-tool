@@ -1,0 +1,132 @@
+//---------------------------
+// 盒子 //
+
+// 固定宽高
+@mixin createBox($w: auto, $h: auto) {
+    width: $w;
+    height: $h;
+}
+// 背景颜色
+@mixin bgcBox($bgc:transparent, $w: auto, $h: auto) {
+    @include createBox($w, $h);
+    background-color: $bgc;
+}
+// 边界
+@mixin borderBox($border: unset, $w: auto, $h: auto) {
+    @include createBox($w, $h);
+    border: $border;
+}
+// 圆弧
+@mixin radiusBox($borderRadius: unset, $w: auto, $h: auto) {
+    @include createBox($w, $h);
+    border-radius: $borderRadius;
+}
+// 阴影
+@mixin shadowBox($boxShadow: unset, $w: auto, $h: auto) {
+    @include createBox($w, $h);
+    box-shadow: $boxShadow;
+}
+// 透明
+@mixin opacityBox($opacity: unset, $w: auto, $h: auto) {
+    @include createBox($w, $h);
+    opacity: $opacity;
+}
+//---------------------------
+// 圆弧盒子 //
+
+// 圆弧与阴影
+@mixin rds_shadowBox($radius: unset, $boxShadow: unset, $w: auto, $h: auto) {
+    @include radiusBox($radius, $w, $h);
+    box-shadow: $boxShadow;
+}
+// 圆弧与边界
+@mixin rds_borderBox($radius: unset, $border: unset, $w: auto, $h: auto) {
+    @include radiusBox($radius, $w, $h);
+    border: $border;
+}
+// 圆弧与透明
+@mixin rds_opacityBox($radius: unset, $opacity: unset, $w: auto, $h: auto) {
+    @include radiusBox($radius, $w, $h);
+    opacity: $opacity;
+}
+// 圆形
+@mixin roundBox($diam: auto) {
+    @include radiusBox(50%, $diam, $diam);
+} 
+// 阴影与圆形
+@mixin bs_roundBox($bs: unset, $diam: auto) {
+    @include rds_shadowBox(50%, $bs, $diam, $diam);
+}
+// 背景颜色与圆形
+@mixin bgc_roundBox($bgc:transparent, $diam: auto) {
+    @include bgc_radiusBox($bgc, $diam, $diam);
+}
+//---------------------------
+// 背景盒子 //
+
+// 背景颜色与圆弧
+@mixin bgc_radiusBox($bgc:transparent, $radius: unset, $w: auto, $h: auto) {
+    @include bgcBox($bgc, $w, $h);
+    border-radius: $radius;
+}
+// 背景颜色与阴影
+@mixin bgc_shadowBox($bgc:transparent, $boxShadow: unset, $w: auto, $h: auto) {
+    @include bgcBox($bgc, $w, $h);
+    box-shadow: $boxShadow;
+}
+// 背景颜色与边界
+@mixin bgc_borderBox($bgc:transparent, $border: unset, $w: auto, $h: auto) {
+    @include bgcBox($bgc, $w, $h);
+    border: $border;
+}
+// 背景颜色与透明
+@mixin bgc_opacityBox($bgc:transparent, $opacity: unset, $w: auto, $h: auto) {
+    @include bgcBox($bgc, $w, $h);
+    opacity: $opacity;
+}
+// 背景图片与背景图片大小
+@mixin bg_sizeBg($url: 'http://temp.im/100x100', $sw: auto, $sh: auto) {
+    background: {
+        image: url($url);
+        size: $sw, $sh;
+        repeat: no-repeat;
+    }
+}
+//---------------------------
+// 阴影盒子 //
+
+// 阴影与边界
+@mixin bs_borderBox($bs: unset, $border: unset, $w: auto, $h: auto) {
+    @include bgcBox($bs, $w, $h);
+    border: $border;
+}
+// 阴影与透明
+@mixin bs_opacityBox($bs: unset, $opacity: unset, $w: auto, $h: auto) {
+    @include bgcBox($bs, $w, $h);
+    opacity: $opacity;
+}
+//---------------------------
+// 弹性盒子 //
+
+// 弹性垂直排列
+@mixin flexColumn {
+    display: flex;
+    flex-direction: column;
+}
+// 弹性水平居中
+@mixin flexCentent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+// 弹性垂直居中
+@mixin flexColumnCentent {
+    @include flexColumn;
+    align-items: center;
+    justify-content: center;
+}
+// 相对定位
+@mixin relaBox($w: auto, $h: auto) {
+    position: relative;
+    @include createBox($w, $h);
+}
