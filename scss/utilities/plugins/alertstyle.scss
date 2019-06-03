@@ -1,6 +1,4 @@
-@import 'D:/Siykt/scss/mixin/mixin';
-@import 'D:/Siykt/scss/mixin/responsive';
-@include allDeletStyle();
+@import '../../mixins/mixin';
 
 html, body {
     @include createBox(100%, 100%);
