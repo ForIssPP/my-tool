@@ -1,56 +1,242 @@
 //---------------------------
+// 文本模块 //
+@import '../function/function';
+// 文本属性内容
+$AN: (
+'color',
+'font-size',
+'text-align',
+'text-indent',
+'letter-spacing',
+'line-height',
+'font-weight',
+);
+//---------------------------
 // 文本颜色 //
 
 // 颜色与字体大小
 @mixin c_fz($c: #7E50BD, $fz: .12rem) {
-    color: $c;
-    font-size: $fz;
+    @include CM(GetTwoAN(), ($c, $fz));
 }
 // 颜色与文本对其
 @mixin c_ta($c: #7E50BD, $ta: center) {
-    color: $c;
-    text-align: $ta;
+    @include CM(GetTwoAN(1, 3), ($c, $ta));
 }
 // 颜色与文本首行缩进
 @mixin c_ti($c: #7E50BD, $ti: .1rem) {
-    color: $c;
-    text-indent: $ti;
+    @include CM(GetTwoAN(1, 4), ($c, $ti));
 }
 // 颜色与字符间距
-@mixin c_ls($c: #7E50BD, $lan: .1rem) {
-    color: $c;
-    letter-spacing: $lan;
+@mixin c_ls($c: #7E50BD, $ls: .1rem) {
+    @include CM(GetTwoAN(1, 5), ($c, $ls));
 }
 // 颜色与行高
 @mixin c_lh($c: #7E50BD, $lh: .12rem) {
-    color: $c;
-    line-height: $lh;
+    @include CM(GetTwoAN(1, 6), ($c, $lh));
 }
 // 颜色与字体加粗
 @mixin c_fw($c: #7E50BD, $fw: 500) {
-    color: $c;
-    font-weight: $fw;
+    @include CM(GetTwoAN(1, 7), ($c, $fw));
 }
 //---------------------------
 // 字体大小 //
 
-// 字体大小与行高
-@mixin fz_lh($fz: .12rem, $lh: $fz) {
-    font-size: $fz;
-    line-height: $lh;
-}
 // 字体大小与文本对其
 @mixin fz_ta($fz: .12rem, $ta: center) {
-    font-size: $fz;
-    text-align: $ta;
-}
-// 字体大小与字符间距
-@mixin fz_ls($fz: .12rem, $lan: .1rem) {
-    font-size: $fz;
-    letter-spacing: $lan;
+    @include CM(GetTwoAN(2, 3), ($fz, $ta));
 }
 // 字体大小与文本首行缩进
 @mixin fz_ti($fz: .12rem, $ti: .1rem) {
-    font-size: $fz;
-    text-indent: $ti;
+    @include CM(GetTwoAN(2, 4), ($fz, $ti));
+}
+// 字体大小与字符间距
+@mixin fz_ls($fz: .12rem, $ls: .1rem) {
+    @include CM(GetTwoAN(2, 5), ($fz, $ls));
+}
+// 字体大小与行高
+@mixin fz_lh($fz: .12rem, $lh: .12rem) {
+    @include CM(GetTwoAN(2, 6), ($fz, $lh));
+}
+// 字体大小与字体加粗
+@mixin fz_fw($fz: .12rem, $fw: 500) {
+    @include CM(GetTwoAN(2, 7), ($fz, $fw));
+}
+//---------------------------
+// 文本对其 //
+
+// 文本对其与文本首行缩进
+@mixin ta_ti($ta: center, $ti: .1rem) {
+    @include CM(GetTwoAN(3, 4), ($ta, $ti));
+}
+// 文本对其与字符间距
+@mixin ta_ls($ta: center, $ls: .1rem) {
+    @include CM(GetTwoAN(3, 5), ($ta, $ls));
+}
+// 文本对其与行高
+@mixin ta_lh($ta: center, $lh: .12rem) {
+    @include CM(GetTwoAN(3, 6), ($ta, $lh));
+}
+// 文本对其与字体加粗
+@mixin ta_fw($ta: center, $fw: 500) {
+    @include CM(GetTwoAN(3, 7), ($ta, $fw));
+}
+//---------------------------
+// 文本首行缩进 //
+
+// 文本首行缩进与字符间距
+@mixin ti_ls($ti: .1rem, $ls: .1rem) {
+    @include CM(GetTwoAN(4, 5), ($ti, $ls));
+}
+// 文本首行缩进与行高
+@mixin ti_lh($ti: .1rem, $lh: .12rem) {
+    @include CM(GetTwoAN(4, 6), ($ti, $lh));
+}
+// 文本首行缩进与字体加粗
+@mixin ti_fw($ti: .1rem, $fw: 500) {
+    @include CM(GetTwoAN(4, 7), ($ti, $fw));
+}
+//---------------------------
+// 字符间距 //
+
+// 字符间距与行高
+@mixin ls_lh($ls: .1rem, $lh: .12rem) {
+    @include CM(GetTwoAN(5, 6), ($ls, $lh));
+}
+// 字符间距与字体加粗
+@mixin ls_fw($ls: .1rem, $fw: 500) {
+    @include CM(GetTwoAN(5, 7), ($ls, $fw));
+}
+//---------------------------
+// 行高 //
+
+// 文本对其与字体加粗
+@mixin lh_fw($lh: .12rem, $fw: 500) {
+    @include CM(GetTwoAN(6, 7), ($lh, $fw));
+}
+//---------------------------
+// 颜色与字体大小 //
+
+// 文本对其
+@mixin cfz_ta($c: #7E50BD, $fz: .12rem, $ta: center) {
+    @include CM(GetThreeAN(), ($c, $fz, $ta));
+}
+// 文本首行缩进
+@mixin cfz_ti($c: #7E50BD, $fz: .12rem, $ti: .1rem) {
+    @include CM(GetThreeAN(1, 2, 4), ($c, $fz, $ti));
+}
+// 字符间距
+@mixin cfz_ls($c: #7E50BD, $fz: .12rem, $ls: .1rem) {
+    @include CM(GetThreeAN(1, 2, 5), ($c, $fz, $ls));
+}
+// 行高
+@mixin cfz_lh($c: #7E50BD, $fz: .12rem, $lh: .12rem) {
+    @include CM(GetThreeAN(1, 2, 6), ($c, $fz, $lh));
+}
+// 字体加粗
+@mixin cfz_fw($c: #7E50BD, $fz: .12rem, $fw: 500) {
+    @include CM(GetThreeAN(1, 2, 7), ($c, $fz, $fw));
+}
+//---------------------------
+// 颜色与文本对其 //
+
+// 文本首行缩进
+@mixin cta_ti($c: #7E50BD, $ta: center, $ti: .1rem) {
+    @include CM(GetThreeAN(1, 3, 4), ($c, $ta, $ti));
+}
+// 字符间距
+@mixin cta_ls($c: #7E50BD, $ta: center, $ls: .1rem) {
+    @include CM(GetThreeAN(1, 3, 5), ($c, $ta, $ls));
+}
+// 行高
+@mixin cta_lh($c: #7E50BD, $ta: center, $lh: .12rem) {
+    @include CM(GetThreeAN(1, 3, 6), ($c, $ta, $lh));
+}
+// 字体加粗
+@mixin cta_fw($c: #7E50BD, $ta: center, $fw: 500) {
+    @include CM(GetThreeAN(1, 3, 7), ($c, $ta, $fw));
+}
+//---------------------------
+// 颜色与文本首行缩进 //
+
+// 字符间距
+@mixin cti_ls($c: #7E50BD, $ti: .1rem, $ls: .1rem) {
+    @include CM(GetThreeAN(1, 4, 5), ($c, $ti, $ls));
+}
+// 行高
+@mixin cti_lh($c: #7E50BD, $ti: .1rem, $lh: .12rem) {
+    @include CM(GetThreeAN(1, 4, 6), ($c, $ti, $lh));
+}
+// 字体加粗
+@mixin cti_fw($c: #7E50BD, $ti: .1rem, $fw: 500) {
+    @include CM(GetThreeAN(1, 4, 7), ($c, $ti, $fw));
+}
+//---------------------------
+// 颜色与字符间距 //
+
+// 行高
+@mixin cls_lh($c: #7E50BD, $ls: .1rem, $lh: .12rem) {
+    @include CM(GetThreeAN(1, 5, 6), ($c, $ls, $lh));
+}
+// 字体加粗
+@mixin cls_fw($c: #7E50BD, $ls: .1rem, $fw: 500) {
+    @include CM(GetThreeAN(1, 5, 7), ($c, $ls, $fw));
+}
+//---------------------------
+// 颜色与行高 //
+
+// 字体加粗
+@mixin clh_fw($c: #7E50BD, $lh: .12rem, $fw: 500) {
+    @include CM(GetThreeAN(1, 5, 7), ($c, $lh, $fw));
+}
+//---------------------------
+// 颜色、字体大小与文本对其 //
+
+// 文本首行缩进
+@mixin cfzta_ti($c: #7E50BD, $fz: .12rem, $ta: center, $ti: .1rem) {
+    @include CM(GetFourAN(1, 2, 3, 4), ($c, $fz, $ta, $ti));
+}
+// 字符间距
+@mixin cfzta_ls($c: #7E50BD, $fz: .12rem, $ta: center, $ls: .1rem) {
+    @include CM(GetFourAN(1, 2, 3, 5), ($c, $fz, $ta, $ls));
+}
+// 行高
+@mixin cfzta_lh($c: #7E50BD, $fz: .12rem, $ta: center, $lh: .12rem) {
+    @include CM(GetFourAN(1, 2, 3, 6), ($c, $fz, $ta, $lh));
+}
+// 字体加粗
+@mixin cfzta_fw($c: #7E50BD, $fz: .12rem, $ta: center, $fw: 500) {
+    @include CM(GetFourAN(1, 2, 3, 7), ($c, $fz, $ta, $fw));
+}
+//---------------------------
+// 颜色、字体大小与文本首行缩进 //
+
+// 字符间距
+@mixin cfzti_ls($c: #7E50BD, $fz: .12rem, $ti: .1rem, $ls: .1rem) {
+    @include CM(GetFourAN(1, 2, 4, 5), ($c, $fz, $ti, $ls));
+}
+// 行高
+@mixin cfzti_lh($c: #7E50BD, $fz: .12rem, $ti: .1rem, $lh: .12rem) {
+    @include CM(GetFourAN(1, 2, 4, 6), ($c, $fz, $ti, $lh));
+}
+// 字体加粗
+@mixin cfzti_fw($c: #7E50BD, $fz: .12rem, $ti: .1rem, $fw: 500) {
+    @include CM(GetFourAN(1, 2, 4, 7), ($c, $fz, $ti, $fw));
+}
+//---------------------------
+// 颜色、字体大小与字间距 //
+
+// 行高
+@mixin cfzls_lh($c: #7E50BD, $fz: .12rem, $ls: .1rem, $lh: .12rem) {
+    @include CM(GetFourAN(1, 2, 5, 6), ($c, $fz, $ls, $lh));
+}
+// 字体加粗
+@mixin cfzls_fw($c: #7E50BD, $fz: .12rem, $ls: .1rem, $fw: 500) {
+    @include CM(GetFourAN(1, 2, 5, 7), ($c, $fz, $ls, $fw));
+}
+//---------------------------
+// 颜色、字体大小与行高 //
+
+// 字体加粗
+@mixin cfzlh_fw($c: #7E50BD, $fz: .12rem, $lh: .12rem, $fw: 500) {
+    @include CM(GetFourAN(1, 2, 6, 7), ($c, $fz, $lh, $fw));
 }
