@@ -1,0 +1,49 @@
+@import 'mixin';
+
+
+// rem适配
+@mixin rem($w: 750) {
+    
+    body {
+        font-size: .12rem;
+    }
+    // 原稿
+    @include max_w($w + px) {
+        html {
+            font-size: 100px;
+        }
+    }
+    // 320像素适配
+    @include math_minWidth(320px, $w);
+    // 360像素适配
+    @include math_minWidth(360px, $w);
+    // 375像素适配
+    @include math_minWidth(375px, $w);
+    // 414像素适配
+    @include math_minWidth(414px, $w);
+    // 750像素适配
+    @include math_minWidth(750px, $w);
+    // 768像素适配
+    @include math_minWidth(768px, $w);
+    // 1024像素适配
+    @include math_minWidth(1024px, $w);
+    // 1080像素适配
+    @include math_minWidth(1080px, $w);
+    // 1280像素适配
+    @include math_minWidth(1280px, $w);
+    // 最大像素适配
+    @include min_w(1480px) {
+        @include math_minWidth(1480px, $w);
+        html {
+            max-width: 1480px;
+            margin: 0 auto;
+        }
+    }
+    // 最小像素适配
+    @include max_w(320px) {
+        html {
+            min-width: 320px;
+            font-size: 320 / $w * 100 + 'px';
+        }
+    }
+}
