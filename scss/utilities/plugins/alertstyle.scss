@@ -1,0 +1,63 @@
+@import 'D:/Siykt/scss/mixin/mixin';
+@import 'D:/Siykt/scss/mixin/responsive';
+@include allDeletStyle();
+
+html, body {
+    @include createBox(100%, 100%);
+    background-color: #d49292;
+}
+
+.alert-dom {
+    @include flexColumnCentent;
+    @include bgc_radiusBox(#fff, .2rem, 6rem, 4rem);
+    margin: 0 auto;
+
+    .user-info, .level, .number {
+        @include flexCentent;
+    }
+
+    .user-info {
+        p {
+            font-size: .36rem;
+        }
+
+        img {
+            @include roundBox(.3rem);
+        }
+    }
+
+    .level {
+        margin: .2rem 0;
+        
+        .anchor {
+            @include createBox(1.14rem, .32rem);
+            margin-right: .1rem;
+        }
+        
+        .user {
+            @include createBox(.7rem, .3rem);
+        }
+    }
+
+    .number {
+        align-items: flex-end;
+
+        img {
+            @include createBox(1.33rem, .21rem);
+            margin-right: .15rem;
+        }
+
+        p {
+            color:#ffd565;
+            line-height: .32rem;
+            font-size: .32rem;
+        }
+    }
+}
+
+.alert-dom > img {
+    @include roundBox(1.4rem);
+    margin: .5rem 0 .3rem;
+}
+
+@include sp(750);
