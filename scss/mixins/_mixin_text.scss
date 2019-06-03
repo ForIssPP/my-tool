@@ -240,3 +240,12 @@ $AN: (
 @mixin cfzlh_fw($c: #7E50BD, $fz: .12rem, $lh: .12rem, $fw: 500) {
     @include CM(GetFourAN(1, 2, 6, 7), ($c, $fz, $lh, $fw));
 }
+//---------------------------
+// 扩展模块 //
+
+// 文本显示控制
+@mixin textOverFlow() {
+    white-space: nowrap; 
+    text-overflow: ellipsis;
+    overflow: hidden;
+}

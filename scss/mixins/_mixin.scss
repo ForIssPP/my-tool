@@ -32,13 +32,6 @@
         }
     }
 }
-// 文本显示控制
-@mixin textOverFlow($w: auto) {
-    @include createBox($w);
-    white-space:nowrap; 
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
 // 气泡
 @mixin bubble($fc, $bgc, $bubbleWidth, $radius) {
     position: relative;
