@@ -1,6 +1,6 @@
-@import 'D:/Siykt/scss/mixin/mixin';
-@import 'D:/Siykt/scss/mixin/responsive';
-@import 'D:/Siykt/scss/mixin/deletstyle';
+@import './deletstyle.scss';
+@import '../../mixins/mixin';
+@import '../../mixins/responsive';
 
 html, body {
     @include bgcBox(#100, 100%, 100%);
