@@ -1,0 +1,12 @@
+@import 'D:/Siykt/scss/mixin/mixin';
+
+.footer {
+    flex: 1;
+    @include flexCentent;
+    .copyright {
+        @include cfz_ta(#fff, 16px, center);
+        p {
+            @include clearElstyle(margin-bottom, 10px);
+        }
+    }
+}

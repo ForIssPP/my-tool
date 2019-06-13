@@ -1,0 +1,44 @@
+@import 'D:/Siykt/scss/mixin/mixin';
+
+%fc {
+    @include flexCentent;
+}
+.header {
+    flex: 0 0 90px;
+    @extend %fc;
+    
+    .nav {
+        flex: 1;
+        @extend %fc;
+        justify-content: flex-end;
+        .nav-list {
+            @extend %fc;
+            .space {
+                @include bgc_opacityBox(#fff, 0.5, 1px, 16px);
+                margin: 0 20px;
+            }
+    
+            a {
+                @include cfz_fw(#fff, 18px, 500);
+    
+                &:hover {
+                    opacity: 0.5;
+                }
+            }
+            
+        }
+    }
+
+    h1 {
+        flex: 1;
+        @extend %fc;
+        justify-content: flex-start;
+    }
+
+    .logo {
+        $w: 172px;
+        $h: 50px;
+        @include createBox($w, $h);
+        @include bg_sizeBg('./../images/logo.png', $w, $h);
+    }
+}
