@@ -32,6 +32,18 @@
         }
     }
 }
+// 自适应边距盒子
+@mixin autoBox($w: auto, $h: auto) {
+    @include createBox($w, $h);
+    margin: 0 auto;
+}
+// 文本显示控制
+@mixin textOverFlow($w: auto) {
+    @include createBox($w);
+    white-space:nowrap; 
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
 // 气泡
 @mixin bubble($fc, $bgc, $bubbleWidth, $radius) {
     position: relative;
@@ -49,86 +61,26 @@
         }
     }
 }
-// 列表查询 //
-
-// 遍历列表函数
-@mixin eachList($attr, $list: (none)) {
-    @for $i from 1 through length($list) {
-        #{$attr}: nth($list, $i);
-    }
+// 背景渐变
+@mixin bgl($list: (blue skyblue), $type: top) {
+    @include eachList_ForMap(CssBrowserRsp(('background': Blg($list, $type))), 'value');
 }
-// 选择多个列表函数
-@mixin choseList($attr, $list: (none), $index: (1)) {
-    @for $i from 1 through length($index) {
-        #{$attr}: nth($list, nth($index, $i));
-    }
-}
-//---------------------------
-// Map查询 //
-
-// 遍历Map列表函数
-@mixin eachList_ForMap($map: (name: ('name'))) {
-    // Map结构 map: ( key: ( value1 value2 ) )
-    @each $attr, $list in $map {
-        @include eachList($attr, $list);
-    }
-}
-// 选择单个Map中单个列表函数
-@mixin choseList_ForMap($map: (), $index: 1) {
-    // Map结构 map: ( key: ( value1 value2 ) )
-    @each $attr, $list in $map {
-        #{$attr}: nth($list, $index);
-    }
-}
-// 遍历单个Map多个列表函数
-@mixin eachMoreList_ForMap($map: (), $index: (1)) {
-    // Map结构 map: ( key: ( value1 value2 ) )
-    @each $attr, $list in $map {
-        @include choseList($attr, $list, $index);
-    }
-}
-// 选择单个Map多个列表函数
-@mixin choseMoreList_ForMap($map: (), $index: (1)) {
-    @each $attr, $list in $map {
-        @include choseList($attr, $list, $index);
-    }
-}
-//---------------------------
-// 计算生成 //
-
-// 计算最小宽度与设计稿字体形成的比例
-@mixin math_minWidth($w, $fz) {
-    @include min_w($w) {
-        html {
-            font-size:  round($w / $fz * 100);
+// 清除同胞元素像素类型样式
+@mixin clearElstyle($key: margin, $v: 10px, $elindex: 'end') {
+    #{$key}: #{$v};
+    @if ($elindex == 'end') {
+        &:last-child {
+            #{$key}: 0;
         }
     }
-}
-// 类生成器同前缀 
-@mixin createSameBegin($name: 'same', $differ: (), $number: 12) {
-    // differ结构 differ: ( key: ( value1 value2 ) )
-    @for $i from 1 through $number {
-        .#{$name}-#{$i} {
-            @include choseList_ForMap($differ, $i);
-            @content;
+    @if ($elindex == 'start') {
+        &:first-child {
+            #{$key}: 0;
         }
     }
-}
-// 类生成器同后缀
-@mixin createSameAfter($name: 'same', $differ: (), $number: 12) {
-    // differ结构 differ: ( key: ( value1 value2 ) )
-    @for $i from 1 through $number {
-        .#{$i}-#{$name} {
-            @include choseList_ForMap($differ, $i);
-            @content;
-        }
-    }
-}
-// 子元素生成器
-@mixin MoreNth($el, $arrayNumber) {
-    @for $i from 0 through $arrayNumber {
-        #{$el}:nth-child(#{$i}) {
-            @content;
+    @if (type-of($value: $elindex) == 'number') {
+        &:nth-child(#{$elindex}) {
+            #{$key}: 0;
         }
     }
 }
