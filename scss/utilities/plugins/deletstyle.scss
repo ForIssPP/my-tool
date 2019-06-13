@@ -1,24 +1,47 @@
 // 清除游览器默认样式
 @mixin allDeletStyle {
+
     // 清除默认边距
-    ul, li, h1, p, a,
-    table, td , tr, tbody, thead,
-    ol, body {
+    ul,
+    li,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    a,
+    table,
+    td,
+    tr,
+    tbody,
+    thead,
+    ol,
+    input,
+    body {
         margin: 0;
         padding: 0;
     }
+
+    button {
+        border: none;
+    }
+
     // 清除默认选中焦点样式
     *:focus {
         outline: none;
     }
+
     // 清除<a>标签默认样式
     a {
         text-decoration: none;
-        -webkit-tap-highlight-color:rgba(0, 0, 0, 0);  
-        -moz-tap-highlight-color:rgba(0, 0, 0, 0);  
-        -ms-tap-highlight-color:rgba(0, 0, 0, 0);  
-        -o-tap-highlight-color:rgba(0, 0, 0, 0);  
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        -moz-tap-highlight-color: rgba(0, 0, 0, 0);
+        -ms-tap-highlight-color: rgba(0, 0, 0, 0);
+        -o-tap-highlight-color: rgba(0, 0, 0, 0);
     }
+
     // 清除<ul>标签默认样式
     ul {
         list-style: none;
