@@ -1,64 +1,128 @@
+//---------------------------
 // 函数模块 //
-//----------------------------------------------------------------------
+$BrowserTypeList: (-webkit-, -o-, -moz-);
+
+//---------------------------
+// 数学计算 //
+@function Math_CutList($oldValue, $list, $n: 12) {
+    $reList: ();
+
+    @for $index from $n to 0 {
+        $oldValue: $oldValue - $list;
+        $reList: append($reList, $oldValue);
+
+    }
+
+    @return $reList;
+}
+
 //---------------------------
 // 列表查询 //
 
 // 遍历列表函数
-@mixin eachList($attr, $list: (none)) {
-    @for $item from 1 through length($list) {
-        #{$attr}: nth($list, $item);
+@mixin eachList($key, $list: (none: neArrah)) {
+    @for $i from 1 through length($list) {
+        #{$key}: nth($list, $i);
     }
 }
+
+// 遍历列表函数(属性)
+@mixin eachListAttr($key, $list: (none)) {
+    @for $i from 1 through length($list) {
+        #{nth($list, $i)}: $key;
+    }
+}
+
 // 选择选定列表内容函数
 @function queryList($list, $index: (1)) {
     $reList: ();
-    @for $item from 1 through length($index) {
-        $reList: append($reList, nth($list, nth($index, $item)));
+
+    @for $i from 1 through length($index) {
+        $reList: append($reList, nth($list, nth($index, $i)));
     }
+
     @return $reList;
 }
+
 // 获取2个 attrName 列表内容
 @function GetTwoAN($n1: 1, $n2: 2) {
     @return queryList($AN, ($n1, $n2));
 }
+
 // 获取3个 attrName 列表内容
 @function GetThreeAN($n1: 1, $n2: 2, $n3: 3) {
     @return queryList($AN, ($n1, $n2, $n3));
 }
+
 // 获取4个 attrName 列表内容
 @function GetFourAN($n1: 1, $n2: 2, $n3: 3, $n4: 4) {
     @return queryList($AN, ($n1, $n2, $n3, $n4));
 }
+
 //---------------------------
 // Map查询 //
 
-// 遍历Map列表函数
-@mixin eachList_ForMap($map: (name: ('name'))) {
-    // Map结构 map: ( key: ( value1 value2 ) )
-    @each $attr, $list in $map {
-        @include eachList($attr, $list);
+// 遍历Map队列
+@mixin each_map($map: (name: ('name'))) {
+
+    // Map结构 map: ( key: ( value1 ) )
+    @each $key,
+    $value in $map {
+        #{$key}: $value;
     }
 }
+
+// 遍历Map列表函数
+@mixin eachList_ForMap($map: (name: ('name')), $type: 'value') {
+
+    // Map结构 map: ( key: ( value1 value2 ) )
+    @if ($type=='value') {
+
+        @each $key,
+        $list in $map {
+            @include eachList($key, $list);
+        }
+    }
+
+    @else {
+
+        @each $key,
+        $list in $map {
+            @include eachListAttr($key, $list);
+        }
+    }
+
+}
+
 // 选择单个Map中单个列表函数
 @mixin choseList_ForMap($map: (), $index: 1) {
+
     // Map结构 map: ( key: ( value1 value2 ) )
-    @each $attr, $list in $map {
-        #{$attr}: nth($list, $index);
+    @each $key,
+    $list in $map {
+        #{$key}: nth($list, $index);
     }
 }
+
 // 遍历单个Map多个列表函数
 @mixin eachMoreList_ForMap($map: (), $index: (1)) {
+
     // Map结构 map: ( key: ( value1 value2 ) )
-    @each $attr, $list in $map {
-        @include choseList($attr, $list, $index);
+    @each $key,
+    $list in $map {
+        @include choseList($key, $list, $index);
     }
 }
+
 // 选择单个Map多个列表函数
 @mixin choseMoreList_ForMap($map: (), $index: (1)) {
-    @each $attr, $list in $map {
-        @include choseList($attr, $list, $index);
+
+    @each $key,
+    $list in $map {
+        @include choseList($key, $list, $index);
     }
 }
+
 //---------------------------
 // 计算生成 //
 
@@ -66,42 +130,106 @@
 @mixin math_minWidth($w, $fz) {
     @include min_w($w) {
         html {
-            font-size:  round($w / $fz * 100);
+            font-size: round($w / $fz * 100);
         }
     }
 }
+
 // 类生成器同前缀 
 @mixin createSameBegin($name: 'same', $differ: (), $number: 12) {
+
     // differ结构 differ: ( key: ( value1 value2 ) )
-    @for $item from 1 through $number {
-        .#{$name}-#{$item} {
-            @include choseList_ForMap($differ, $item);
+    @for $i from 1 through $number {
+        .#{$name}-#{$i} {
+            @include choseList_ForMap($differ, $i);
             @content;
         }
     }
 }
+
 // 类生成器同后缀
 @mixin createSameAfter($name: 'same', $differ: (), $number: 12) {
+
     // differ结构 differ: ( key: ( value1 value2 ) )
-    @for $item from 1 through $number {
-        .#{$item}-#{$name} {
-            @include choseList_ForMap($differ, $item);
+    @for $i from 1 through $number {
+        .#{$i}-#{$name} {
+            @include choseList_ForMap($differ, $i);
             @content;
         }
     }
 }
-// 子元素生成器
-@mixin MoreNth($el, $arrayNumber) {
-    @for $item from 0 through $arrayNumber {
-        #{$el}:nth-child(#{$item}) {
-            @content;
-        }
-    }
-}
+
 // 创建mixin方法
 @mixin CM($attrName: (), $value: ()) {
     @for $i from 1 through length($attrName) {
         #{nth($attrName, $i)}: nth($value, $i);
         @content;
     }
+}
+
+// 子元素生成器
+@mixin MoreNth($el: 'span', $arrayNumber: 12, $differ: ()) {
+    @for $i from 1 through $arrayNumber {
+        #{$el}:nth-child(#{$i}) {
+            @include choseList_ForMap($differ, $i);
+            @content;
+        }
+    }
+}
+
+// 选择子元素生成器
+@mixin MoreNthChild($el: 'span', $arrayNumber: 12, $differ: (), $cel: 'i') {
+    @for $i from 1 through $arrayNumber {
+        #{$el + ':nth-child(' + $i + ') ' + $cel} {
+            @include choseList_ForMap($differ, $i);
+            @content;
+        }
+    }
+}
+
+//---------------------------
+// 浏览器适配函数 //
+
+// 游览器值前缀
+@function CssBrowserRsp($map: ('background': Blg())) {
+    $reMap: ();
+
+    @each $key,
+    $value in $map {
+        $reList: ($value);
+
+        @each $browserType in $BrowserTypeList {
+            $reList: append($reList, $browserType + $value);
+            $reMap: (#{$key}: $reList);
+        }
+    }
+
+    @return $reMap;
+}
+
+// 渐变
+@function Blg($list: (blue skyblue), $type: 'left') {
+    $lg: '';
+
+    @if ($type=='right') {
+        $lg: linear-gradient(0deg, $list);
+    }
+
+    @else if ($type=='left') {
+        $lg: linear-gradient(90deg, $list);
+    }
+
+    @else if ($type=='top') {
+        $lg: linear-gradient($list);
+    }
+
+    @else if ($type=='bottom') {
+        $lg: linear-gradient(270deg, $list);
+    }
+
+    @else {
+        $lg: linear-gradient($type, $list);
+    }
+
+    @return $lg;
 }
