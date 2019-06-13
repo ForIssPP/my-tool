@@ -1,0 +1,38 @@
+@import 'D:/Siykt/scss/mixin/mixin';
+@import 'D:/Siykt/scss/mixin/deletstyle';
+
+.img {
+    @include flexCentent;
+    padding-top: 100px;
+}
+
+#btn,
+.other {
+    @include flexColumnCentent;
+}
+
+.imgbox,
+.other {
+    position: relative;
+}
+
+.other {
+    @include createBox(100%, 118px);
+
+    img {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transition: all .5s;
+    }
+
+    img.active {
+        $n: 50;
+        top: -400px;
+    }
+
+    img.ok {
+        $n: 50;
+        transform: rotate(-$n + deg);
+    }
+}
