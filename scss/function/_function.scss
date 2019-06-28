@@ -10,7 +10,6 @@ $BrowserTypeList: (-webkit-, -o-, -moz-);
     @for $index from $n to 0 {
         $oldValue: $oldValue - $list;
         $reList: append($reList, $oldValue);
-
     }
 
     @return $reList;
@@ -140,7 +139,7 @@ $BrowserTypeList: (-webkit-, -o-, -moz-);
 
     // differ结构 differ: ( key: ( value1 value2 ) )
     @for $i from 1 through $number {
-        .#{$name}-#{$i} {
+        #{$name}-#{$i} {
             @include choseList_ForMap($differ, $i);
             @content;
         }
@@ -152,7 +151,7 @@ $BrowserTypeList: (-webkit-, -o-, -moz-);
 
     // differ结构 differ: ( key: ( value1 value2 ) )
     @for $i from 1 through $number {
-        .#{$i}-#{$name} {
+        #{$i}-#{$name} {
             @include choseList_ForMap($differ, $i);
             @content;
         }
@@ -168,7 +167,7 @@ $BrowserTypeList: (-webkit-, -o-, -moz-);
 }
 
 // 子元素生成器
-@mixin MoreNth($el: 'span', $arrayNumber: 12, $differ: ()) {
+@mixin MoreNth($el: '*', $arrayNumber: 12, $differ: ()) {
     @for $i from 1 through $arrayNumber {
         #{$el}:nth-child(#{$i}) {
             @include choseList_ForMap($differ, $i);
@@ -178,7 +177,7 @@ $BrowserTypeList: (-webkit-, -o-, -moz-);
 }
 
 // 选择子元素生成器
-@mixin MoreNthChild($el: 'span', $arrayNumber: 12, $differ: (), $cel: 'i') {
+@mixin MoreNthChild($el: '*', $arrayNumber: 12, $differ: (), $cel: 'i') {
     @for $i from 1 through $arrayNumber {
         #{$el + ':nth-child(' + $i + ') ' + $cel} {
             @include choseList_ForMap($differ, $i);
