@@ -1,0 +1,24 @@
+@mixin title-bar {
+
+    @include createFlexBox(center, flex-start, row);
+    margin: 30px 0 17px;
+
+    %fz {
+        @include cfz_fw(#333, 16px, 400);
+    }
+
+    .space {
+        @include bgc_borderBox(#A476E9FF, 2px, 4px, 20px);
+        margin-right: 13px;
+    }
+
+    h3 {
+        @extend %fz;
+    }
+
+    a {
+        @extend %fz;
+        margin-left: auto;
+        font-size: 14px;
+    }
+}
