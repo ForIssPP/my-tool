@@ -1,0 +1,192 @@
+@import '../../mixins/mixin';
+@import '../plugins/deletstyle';
+@import 'D:/Siykt/scss/mixin/responsive';
+
+%fc {
+    @include flexCenter;
+}
+
+%fcc {
+    @include flexColumnCenter;
+}
+
+%btn{
+    @include createBox(2.2rem, .5rem);
+    position: absolute;
+    bottom: .5rem;
+}
+
+html,
+body {
+    background-color: transparent;
+}
+
+body.browser {
+    @include bgc_bgurl('../images/fd/body_bg.png', 100%, 2.15rem);
+    height: auto;
+    background-repeat: repeat-y;
+
+    .fd-box {
+
+        transform: scale(1) translate(0, 0);
+
+        .play {
+            display: block;
+        }
+
+        .content-box {
+            @include bgc_radiusBox(#FFCF93FF, .3rem, 6.6rem, 5.87rem);
+            border: .11rem solid #F09765FF;
+        }
+
+        .m500 {
+            @extend %btn;
+            left: 1.25rem;
+            bottom: 2.2rem;
+        }
+    
+        .m2000 {
+            @extend %btn;
+            left: 4rem;
+            bottom: 2.2rem;
+        }
+    }
+}
+
+#top {
+    @include bgc_bgurl('../images/fd/top_bg.png', 100%, 7.89rem);
+}
+
+.box {
+    %w {
+        width: 100%;
+    }
+
+    %to {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    @include bgc_bgurl('../images/fd/box_bg.png', 6.6rem, 5.8rem);
+    margin: 0 auto;
+    padding-top: .7rem;
+
+    .order {
+        @extend %fcc;
+        width: 80%;
+        margin: 0 auto;
+        height: 4.5rem;
+        overflow: hidden;
+    }
+
+    .title {
+
+        @extend %fc,
+        %w;
+        @include cfz_fw(#9D3B0AFF, .3rem, 500);
+
+        @include MoreNth('p', 4, (flex: (0 0 .6rem, 0 0 1rem, 0 0 1rem, 0 0 1rem))) {
+            text-align: center;
+            @extend %to;
+        }
+
+        margin-bottom: .1rem;
+
+        justify-content: space-evenly;
+    }
+
+    ul {
+        @extend %w;
+        overflow: auto;
+
+        li {
+            @extend %fc,
+            %w;
+            @include cfzta_fw(#000, .28rem, center, 500);
+            justify-content: space-evenly;
+            margin-top: .15rem;
+            @extend %to;
+        }
+
+        .portrait {
+            @include roundBox(.6rem);
+            flex: 0 0 .6rem;
+            @extend %to;
+        }
+
+        .luckyType {
+            flex: 0 0 .6rem;
+            @extend %to;
+        }
+
+        p {
+            flex: 0 0 1rem;
+            @extend %to;
+        }
+    }
+}
+
+.fd-box {
+    position: relative;
+    transform: scale(.8) translate(0, -.7rem);
+
+    .play {
+        @include bgc_bgurl('../images/fd/title.png', 5.22rem, .94rem);
+        display: none;
+        margin: -1.2rem auto .3rem;
+    }
+
+    .content-box {
+        @extend %fc;
+        @include bgc_radiusBox(transparent, .3rem, 6.6rem, 5.87rem);
+        margin: 0 auto;
+
+        .bg {
+            @include bgc_bgurl('../images/fd/content_bg.png', 6.36rem, 5.63rem);
+        }
+    }
+
+    .lucky-title {
+        @include bgc_bgurl('../images/fd/lucky_man.png', 6.54rem, 1.08rem);
+        margin: .5rem auto .2rem;
+    }
+
+    .m500 {
+        @extend %btn;
+        left: 1.25rem;
+    }
+
+    .m2000 {
+        @extend %btn;
+        left: 4rem;
+    }
+}
+
+.show {
+    display: none;
+    @include bgc_bgurl('../images/fd/fd_dom.png', 7.5rem, 5.79rem);
+
+    .content {
+        display: flex;
+        height: 100%;
+        flex-flow: column;
+        justify-content: flex-start;
+        align-items: center;
+        color: #fff;
+        font-size: .38rem;
+
+        img {
+            width: 1.29rem;
+            height: 1.29rem;
+            margin-bottom: .25rem;
+        }
+    }
+}
+
+div.layer-anim {
+    background-color: transparent;
+    box-shadow: none
+}
+
+@include rem();

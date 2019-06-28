@@ -1,0 +1,292 @@
+@import '../../mixins/mixin';
+@import '../plugins/deletstyle';
+@import '../../mixins/responsive';
+
+%fc {
+    @include flexCenter;
+}
+
+%fs {
+    @include createFlexBox(center, flex-start, row);
+}
+
+%fcs {
+    @include createFlexBox(center, flex-start);
+}
+
+%fcc {
+    @include flexColumnCenter;
+}
+
+@font-face {
+    font-family: FZZJ-XSS-1;
+    src: url('../font/FZZJ-XSS-1.ttf');
+}
+
+@font-face {
+    font-family: backFonts;
+    src: url('../font/backFonts.ttf');
+}
+
+%fm {
+    @include cfz_fw(#BEBCDFFF, .3rem, 400);
+    font-family: FZZJ-XSS-1;
+}
+
+body {
+    background-color: #312F47FF;
+}
+
+.app {
+    @include createBox(100%, 100%);
+    @extend %fcs;
+}
+
+.nav {
+    @extend %fcs;
+    position: absolute;
+    top: 5rem;
+    right: -.23rem;
+
+    a {
+        @include cfz_fw(#fff, .24rem, 500);
+        @extend %fc;
+        width: 1.5rem;
+        height: .47rem;
+        background: rgba(23, 25, 40, 0.42);
+        border-radius: 24px;
+    }
+
+    a:first-of-type {
+        margin-bottom: .1rem;
+    }
+}
+
+.top-bg {
+    @include bgc_bgurl('../images/game/top_bg.png', 100%, 7.64rem);
+}
+
+
+.content {
+    @extend %fcc;
+    @include bgc_bgurl('../images/game/content_bg.png', 7rem, 6.97rem);
+    margin-bottom: .4rem;
+
+    .game-box {
+        @include createBox(100%, 5.7rem);
+        @extend %fcs;
+    }
+
+    .game {
+        @include createBox(100%, 4.18rem);
+        @extend %fc;
+        flex-wrap: wrap;
+
+        &>* {
+            transition: transform, background-image 1s;
+        }
+
+        @keyframes play {
+            0% {
+                transform: rotateY(0deg);
+            }
+
+            100% {
+                transform: rotateY(360deg);
+                background-image: url('../images/game/card_back.png');
+            }
+        }
+
+        .goBack {
+            animation: play 2s 1;
+            animation-fill-mode: forwards;
+        }
+    }
+
+    .card-1 {
+        @include bgc_bgurl('../images/game/card.png', 2.99rem, 4.18rem);
+    }
+
+    .card-10 {
+        @include bgc_bgurl('../images/game/card.png', 1.4rem, 2.19rem);
+    }
+
+    .card-5 {
+        @extend .card-10;
+        margin-right: 1.2rem;
+
+        &:last-of-type,
+        &:nth-child(3) {
+            margin: 0;
+        }
+    }
+
+    .lucky {
+        @include createBox(100%, .4rem);
+        @extend %fc;
+        margin-top: .15rem;
+
+        div {
+            @include bgc_radiusBox(#2A293DFF, .05rem, 2rem, .38rem);
+            @include cfz_fw(#fff, .2rem, 500);
+            @extend %fc;
+            margin-left: .22rem;
+            box-shadow: 0 0 10px 2px #ffffff50;
+
+            &:first-of-type {
+                margin-left: 0;
+            }
+        }
+    }
+
+    .btn {
+        @extend %fm,
+        %fc;
+        margin-top: .27rem;
+
+        div {
+            @include bgc_radiusBox(#7E7D8DFF, .33rem, 1.65rem, .66rem);
+            @extend %fcc;
+            margin-right: .13rem;
+
+            span {
+                font-size: .24rem;
+            }
+        }
+
+        .active {
+            color: #CAC2A7FF;
+            background-color: #7C4022FF;
+        }
+
+        .start {
+            @include bgc_radiusBox(#FF6C86FF, .33rem, 1rem, .56rem);
+            border: .05rem solid #C72D47FF;
+            margin-right: 0;
+            margin-left: .3rem;
+        }
+    }
+}
+
+.top {
+    @extend %fcc;
+    font-size: 0;
+
+    .top-title {
+        @extend %fc;
+
+        a {
+            @include bgc_radiusBox(rgba(105, 103, 147, .8), .2rem .2rem 0 0, 2.55rem, .67rem);
+            @include c_fz(#fff, .48rem);
+            @extend %fm,
+            %fc;
+            margin-left: .2rem;
+
+            &:first-of-type {
+                margin-left: 0;
+            }
+
+            &.active {
+                background-color: rgba(35, 34, 52, .8);
+            }
+        }
+    }
+}
+
+
+.day,
+.week {
+    $f: 0 0;
+    @include bgc_radiusBox(rgba(105, 103, 147, .8), .1rem .1rem 0 0, 6.88rem, 6.45rem);
+    @extend %fcs;
+    overflow: hidden;
+
+    ul {
+        padding-top: .4rem;
+        padding-bottom: .4rem;
+        overflow: auto;
+    }
+
+    li {
+        @include bgc_radiusBox(rgba(35, 34, 52, .7), .1rem, 6rem, 1rem);
+
+        @include MoreNth('>*', 4, (flex: ($f 1rem, $f .64rem, 1 1 0, $f 1.3rem))) {
+            text-align: center;
+        }
+
+        ;
+        @extend %fs;
+        margin-bottom: .2rem;
+
+        &:last-of-type {
+            margin-bottom: 0;
+        }
+    }
+
+    span {
+        @include cfz_fw(#fff, .36rem, 500);
+    }
+
+    img {
+        @include roundBox(.64rem);
+    }
+
+    p {
+        @include cfzti_fw(#fff, .24rem, .14rem, 500);
+        text-align: left !important;
+    }
+
+    .hot {
+        @extend %fc;
+        color: #FF6F6FFF;
+
+        i {
+            @include bgc_bgurl('../images/game/hot.png', .22rem, .28rem);
+            margin-right: .1rem;
+        }
+    }
+}
+
+.top-box {
+
+    .day {
+        border-radius: unset;
+        background-color: unset;
+        @include bgc_bgurl('../images/game/topday_bg.png', 6.9rem, 9rem);
+        margin-bottom: 1.3rem;
+
+        ul {
+            margin-top: .95rem;
+            padding-top: 0;
+        }
+    }
+}
+
+
+.rule {
+    @include bgc_radiusBox(rgba(105, 103, 147, .8), .1rem, 6.4rem, 6.73rem);
+    padding: 0 .25rem;
+    overflow-x: hidden;
+
+    .rule-box {
+        padding-bottom: .45rem;
+        overflow-x: auto;
+    }
+
+    h1 {
+        @include cfzta_fw(#fff, .48rem, center, 500);
+        @extend %fm;
+        margin: .33rem 0 .12rem;
+    }
+
+    h3 {
+        @include cfz_fw(#F5D95DFF, .24rem, 500);
+        margin: .3rem 0;
+    }
+
+    p {
+        @include cfzta_fw(#fff, .24rem, justify, 500);
+    }
+}
+
+@include rem();
