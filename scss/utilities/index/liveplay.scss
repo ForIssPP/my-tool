@@ -1,0 +1,270 @@
+@import '../../mixins/mixin';
+@import '../plugins/deletstyle';
+
+$n100: 100%;
+$w: 1121px;
+
+%fc {
+    @include flexCenter;
+}
+
+%fs {
+    @include createFlexBox(center, flex-start, row);
+}
+
+%fcs {
+    @include createFlexBox(center, flex-start);
+}
+
+%fcc {
+    @include flexColumnCenter;
+}
+
+body,
+html {
+    @include createBox($n100, auto);
+}
+
+body {
+    @extend %fcc;
+    background-color: #f0f0f0;
+
+    &>* {
+        width: $n100;
+    }
+}
+
+.container {
+    position: relative;
+    @extend %fc;
+    @include autoBox($w, $n100);
+    z-index: 2;
+}
+
+.content {
+    flex: 4;
+    border-bottom: 1px solid #ccc;
+
+    .container {
+        @include flexColumn;
+        justify-content: flex-start;
+
+        &>.title {
+            width: $n100;
+
+            h1 {
+                @include cfz_ti(#000, 18px, 25px);
+                margin-top: 45px;
+            }
+        }
+    }
+}
+
+.avatar {
+    @include roundBox(80px);
+}
+
+.live-play {
+    @extend %fc;
+    @include createBox($n100, 600px);
+    margin-top: 30px;
+
+    %cl {
+        flex: 1;
+        height: 100%;
+    }
+
+    .liveroom {
+        @extend %cl;
+        position: relative;
+        margin-right: 20px;
+        background-color: #000000;
+
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+    }
+
+    .chatroom {
+        @extend %cl,
+        %fcc;
+    }
+
+    .live-info {
+        @extend %fs;
+        @include bgcBox(#fff, 100%, 123px);
+
+        .avatar {
+            margin: 0 12px 0 30px;
+        }
+
+        .focus {
+            @include bgc_radiusBox(#A476E9FF, 18px, 100px, 36px);
+            @include cfz_fw(#fff, 18px, 400);
+            margin: 0 30px 0 auto;
+        }
+    }
+
+    .info-list {
+        .people {
+            @extend %fc;
+        }
+
+        .name {
+            @include cfz_fw(#757F82FF, 18px, bold);
+        }
+    }
+
+    .chat-box {
+        @extend %fcc;
+        @include bgcBox(#fff, $n100, 440px);
+        margin-top: auto;
+    }
+
+    .chat-bar {
+        @extend %fs;
+        // @include bgc_borderBox(#fff, 2px solid #ECF0F1, 80%, 36px);
+        @include createBox(80%, );
+        position: relative;
+        margin: auto auto 10px;
+        // border-radius: 30px;
+
+        em {
+            @include c_fz(#A476E9FF, 12px);
+            position: absolute;
+            margin: 0 3px 0 20px;
+            font-style: normal;
+            cursor: pointer;
+        }
+
+        .send {
+            @include bgc_radiusBox(#A476E9FF, 18px, 100px, 36px);
+            @include c_fz(#fff, 12px);
+            margin-left: auto;
+        }
+    }
+
+    .msg-list {
+        @extend %fcs;
+        width: $n100;
+    }
+
+    .msg-content {
+        @extend %fs;
+        width: $n100;
+        @include clearElstyle(margin-bottom, 10px, end);
+        @include c_fz(#849195, 12px);
+
+        &:first-child {
+            margin-top: 10px;
+        }
+
+        .level {
+            margin: 0 10px;
+        }
+
+    }
+
+    #chatText {
+        @include cfz_ti(#ccc, 12px, 48px);
+        @include bgc_borderBox(#fff, 2px solid #ECF0F1, 80%, 36px);
+        border-radius: 30px;
+        margin-right: 20px;
+
+        &::-webkit-input-placeholder{
+            @include c_fz(#ccc, 12px);
+        }
+    }
+}
+
+.live-recomm {
+    width: 100%;
+    margin-bottom: 60px;
+
+    .recomm-title {
+        @extend %fs;
+        margin: 30px 0 17px;
+
+        %fz {
+            @include cfz_fw(#333, 16px, 400);
+        }
+
+        .space {
+            @include bgc_borderBox(#A476E9FF, 2px, 4px, 20px);
+            margin-right: 13px;
+        }
+
+        h3 {
+            @extend %fz;
+        }
+
+        a {
+            @extend %fz;
+            margin-left: auto;
+            font-size: 14px;
+        }
+    }
+
+    .recomm-list {
+        @extend %fc;
+    }
+
+    .recomm-item {
+        @include clearElstyle(margin-right, 20px, end);
+        @include bgc_shadowBox(#fff, 0px 3px 8px 0px rgba(0, 0, 0, 0.1), auto, 383px);
+        flex: 1;
+        position: relative;
+    }
+
+    .item-title {
+        @extend %fs;
+        position: absolute;
+        width: 100%;
+        padding-top: 16px;
+
+        .hot {
+            @include cfz_fw(#fff, 20px bold);
+            margin-left: 16px;
+            opacity: 0.8;
+
+            .icon {
+                margin-right: 5px;
+            }
+        }
+
+        .live-state {
+            @include bgc_radiusBox(rgba(0, 0, 0, 0.32), 12px, 80px, 25px);
+            @include cfz_fw(#fff, 14px, 400);
+            @extend %fc;
+            margin: 0 16px 0 auto;
+
+            i {
+                margin-right: 5px;
+            }
+        }
+    }
+
+    .item-content {
+        @include createBox($n100, auto);
+        font-size: 0;
+
+        img {
+            @include createBox($n100, 280px);
+        }
+    }
+
+    .item-bottom {
+        @extend %fs;
+
+        .avatar {
+            @include roundBox(40px);
+            margin: 12px 8px 0 12px;
+        }
+
+        .name {
+            @include cfz_fw(#000, 20px, 500);
+        }
+    }
+}

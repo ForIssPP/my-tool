@@ -1,0 +1,13 @@
+@import '../../mixins/mixin';
+
+.footer {
+    flex: 1;
+    margin: 23px 0;
+    @include flexCenter;
+    .copyright {
+        @include cfz_ta(#333333FF, 16px, center);
+        p {
+            @include clearElstyle(margin-bottom, 10px);
+        }
+    }
+}

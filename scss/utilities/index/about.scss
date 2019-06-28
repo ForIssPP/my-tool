@@ -1,0 +1,101 @@
+@import '../../mixins/mixin';
+@import '../plugins/deletstyle.scss';
+$n100: 100%;
+$w: 1121px;
+
+%fc {
+    @include flexCenter;
+}
+
+%fs {
+    @include createFlexBox(center, flex-start, row);
+}
+
+%fcs {
+    @include createFlexBox(center, flex-start);
+}
+
+%fcc {
+    @include flexColumnCenter;
+}
+
+body,
+html {
+    @include createBox($n100, $n100);
+}
+
+body {
+    @extend %fcc;
+    background-color: #f0f0f0;
+
+    &>* {
+        width: $n100;
+    }
+}
+
+.content {
+    flex: 4;
+    border-bottom: 1px solid #ccc;
+
+    .container {
+        @extend %fc;
+        align-items: flex-start;
+        margin-top: 15px;
+    }
+}
+
+%cf {
+    @include c_fz(#666666FF, 20px);
+}
+
+.navbar {
+    @include bgcBox(#E3E3E3FF, 190px, 336px);
+    flex: 0 0 190px;
+    margin-right: 36px;
+
+    ul {
+        @extend %fcs;
+    }
+
+    li {
+        @include createBox(170px, 45px);
+        @extend %fs;
+        margin-top: 15px;
+        border-bottom: 1px solid #D0D0D0FF;
+
+        a {
+            @extend %fs, %cf;
+            @include createBox($n100, $n100);
+            font-size: 16px;
+            
+        }
+
+        a.active,
+        &:hover a {
+            color: #AA73E2FF;
+        }
+    }
+}
+
+.text-content {
+
+    h1.title {
+        @extend %cf;
+        text-align: center;
+        margin: 7px 0 37px;
+    }
+
+    h2 {
+        @extend %cf;
+        margin-bottom: 22px;
+    }
+
+    p {
+        @extend %cf;
+        text-align: justify;
+        font-size: 16px;
+        margin-bottom: 30px;
+    }
+
+    margin-bottom: 50px;
+}

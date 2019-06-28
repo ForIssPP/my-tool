@@ -1,0 +1,208 @@
+@import '../../mixins/mixin';
+@import '../plugins/deletstyle';
+@import '../plugins/title-bar';
+
+$n100: 100%;
+$w: 1121px;
+
+%fc {
+    @include flexCenter;
+}
+
+%fs {
+    @include createFlexBox(center, flex-start, row);
+}
+
+%fcs {
+    @include createFlexBox(center, flex-start);
+}
+
+%fcc {
+    @include flexColumnCenter;
+}
+
+body,
+html {
+    @include createBox($n100, auto);
+}
+
+body {
+    @extend %fcc;
+    background-color: #f0f0f0;
+
+    &>* {
+        width: $n100;
+    }
+}
+
+.content {
+    flex: 4;
+    border-bottom: 1px solid #ccc;
+
+    .container {
+        @include flexColumn;
+        justify-content: flex-start;
+
+        &>.title {
+            width: $n100;
+
+            h1 {
+                @include cfz_ti(#000, 18px, 25px);
+                margin-top: 45px;
+            }
+        }
+    }
+}
+
+.live-recomm {
+    width: 100%;
+    margin-bottom: 40px;
+    cursor: pointer;
+
+    .recomm-title {
+        @include title-bar;
+    }
+}
+
+.recomm-list {
+    @extend %fs;
+    flex-wrap: wrap;
+}
+
+.recomm-item {
+    @include clearElstyle(margin-right, 20px, end);
+    @include bgc_shadowBox(#fff, 0px 3px 8px 0px rgba(0, 0, 0, 0.1), auto, 383px);
+    flex: 0 0 360px;
+    position: relative;
+    margin-bottom: 20px;
+
+    &:nth-child(3n) {
+        margin-right: 0;
+    }
+}
+
+.item-title {
+    @extend %fs;
+    position: absolute;
+    width: 100%;
+    padding-top: 16px;
+
+    .hot {
+        @include cfz_fw(#fff, 20px bold);
+        margin-left: 16px;
+        opacity: 0.8;
+
+        .icon {
+            margin-right: 5px;
+        }
+    }
+
+    .live-state {
+        @include bgc_radiusBox(rgba(0, 0, 0, 0.32), 12px, 80px, 25px);
+        @include cfz_fw(#fff, 14px, 400);
+        @extend %fc;
+        margin: 0 16px 0 auto;
+
+        i {
+            margin-right: 5px;
+        }
+    }
+}
+
+.item-content {
+    @include createBox($n100, auto);
+    font-size: 0;
+
+    img {
+        @include createBox($n100, 280px);
+    }
+}
+
+.item-bottom {
+    @extend %fs;
+
+    .avatar {
+        @include roundBox(40px);
+        margin: 12px 8px 0 12px;
+    }
+
+    .name {
+        @include cfz_fw(#000, 20px, 500);
+    }
+}
+
+.control-bar {
+    @extend %fs;
+    @include createBox(550px, 32px);
+    margin-bottom: 17px;
+
+    %btn {
+        @extend %fs;
+
+        a {
+            @extend %fc;
+            @include bgc_borderBox(#fff, 1px solid #A476E9FF, 80px, 30px);
+            @include cfz_fw(#A476E9FF, 16px, 500);
+            border-radius: 5px;
+        }
+
+        a.active,
+        a:hover {
+            color: #fff;
+            background-color: #A476E9FF;
+        }
+    }
+
+    .first {
+        @extend %btn;
+        margin-right: 16px;
+
+        a:first-child {
+            width: 60px;
+            margin-right: 6px;
+        }
+    }
+
+
+
+    .last {
+        @extend %btn;
+        margin-left: 16px;
+
+        a:last-child {
+            width: 60px;
+            margin-left: 6px;
+        }
+    }
+}
+
+.number {
+    a {
+        @extend %fc;
+        @include createBox($n100, $n100);
+    }
+
+    ul {
+        @extend %fs;
+        @include createBox(auto, 100%);
+
+        li {
+            @include bgc_borderBox(#fff, 1px solid #A476E9FF, 40px, 30px);
+            @include clearElstyle(margin-right, 6px);
+            border-radius: 5px;
+        }
+
+        a {
+            @include cfz_fw(#A476E9FF, 16px, 400);
+        }
+
+        li.active,
+        li:hover {
+            background-color: #A476E9FF;
+
+            a {
+                color: #fff;
+            }
+        }
+    }
+}

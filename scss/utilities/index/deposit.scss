@@ -1,0 +1,190 @@
+@import '../../mixins/mixin';
+@import '../plugins/deletstyle.scss';
+$n100: 100%;
+$w: 1121px;
+
+%fc {
+    @include flexCenter;
+}
+
+%fcc {
+    @include flexColumnCenter;
+}
+
+body,
+html {
+    @include createBox($n100, auto);
+}
+
+body {
+    @extend %fcc;
+    min-width: $w;
+
+    &>* {
+        width: 100%;
+    }
+}
+
+.container {
+    position: relative;
+    @extend %fc;
+    @include autoBox($w, $n100);
+    z-index: 2;
+}
+
+.content {
+    flex: 4;
+    border-bottom: 1px solid rgba(204, 204, 204, 1);
+
+    .container {
+        @include flexColumn;
+        justify-content: flex-start;
+
+        &>.title {
+            width: $n100;
+
+            h1 {
+                @include cfz_ti(#000, 18px, 25px);
+                margin-top: 45px;
+            }
+        }
+    }
+}
+
+.deposit {
+    width: $w - 80;
+    padding: 40px 45px 25px;
+
+    .user {
+        @extend %fc;
+        justify-content: flex-start;
+
+        img {
+            @include roundBox(80px);
+            margin-right: 12px;
+        }
+
+        h2 {
+            @include cfz_fw(rgba(0, 0, 0, 1), 20px, bold);
+            margin-bottom: 10px;
+        }
+
+        .name {
+            @include cfz_fw(rgba(153, 153, 153, 1), 16px, bold);
+        }
+    }
+}
+
+.deposit-list {
+    @include borderBox(1px solid rgba(204, 204, 204, .7), 100%, 425px);
+    border-left: none;
+    border-right: none;
+    margin: 40px 0 27px;
+
+    .deposit-title {
+        margin: 30px 0 40px;
+        @include cfz_fw(rgb(153, 153, 153), 17px, 400);
+    }
+
+}
+
+.deposit-item {
+    $c: #987BE9FF;
+    $ac: #fff;
+    @extend %fc;
+    @include eachList_ForMap(CssBrowserRsp(('wrap': 'flex-wrap')), 'attr');
+    justify-content: flex-start;
+
+    li {
+        margin: 0 45px 35px 0;
+    }
+
+    .item-box {
+        @include createBox(186px, 120px);
+        @include bg_sizeBg('../images/other/buy_bg.png');
+        position: relative;
+        background-position: 100% 0;
+        cursor: pointer;
+
+        &:hover {
+            background-position: 0 0;
+
+            .item-box-mfb,
+            .item-box-money {
+                color: $ac;
+            }
+        }
+    }
+
+    .item-box-title {
+        @include createBox($n100, 25px);
+        @include cfzlh_fw($ac, 13px, 25px, 400);
+        text-indent: 86px;
+    }
+
+    .item-box-mfb {
+        @include cfzta_fw($c, 18px, center, bold);
+        margin: 6px 0 30px;
+    }
+
+    .item-box-money {
+        @include cfzta_fw($c, 16px, center, 400);
+    }
+}
+
+.deposit-buy {
+    .checkbox {
+        @extend %fc;
+        justify-content: flex-start;
+
+        input {
+            // @include bgcBox(#fff, 12px, 12px);
+            // color: #fff;
+            display: none;
+        }
+
+        label {
+            @include bgc_borderBox(#fff, 1px solid rgba(153, 153, 153, 1), 12px, 12px);
+            margin-right: 3px;
+            color: #fff;
+            border-radius: 3px;
+            cursor: pointer;
+            translate: all 1s;
+        }
+
+        label::before {
+            @include bgc_borderBox(#987BE9FF, 1px solid rgba(153, 153, 153, 1), 12px, 12px);
+        }
+
+        label.active {
+            @include bgc_borderBox(#987BE9FF, 1px solid #987BE9FF, 12px, 12px);
+        }
+
+        span {
+            @include cfz_fw(#999999FF, 14px, 400);
+        }
+
+        a {
+            @include cfz_fw(#987BE9FF, 14px, 400);
+            text-decoration: underline;
+        }
+    }
+
+    .buy {
+        @include bgc_radiusBox(#9D82E5FF, 10px, 180px, 50px);
+        @include cfz_fw(#fff, 20px, 300);
+        float: right;
+        margin: 37px 0 18px;
+        cursor: pointer;
+    }
+
+    h3 {
+        @include cfzta_fw(#FF3434FF, 13px, right, 300);
+        float: right;
+        width: 100%;
+    }
+}
+
+.footer .copyright {
+    color: rgba(153, 153, 153, 1);
+}
