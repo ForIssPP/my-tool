@@ -123,6 +123,14 @@ $BrowserTypeList: (-webkit-, -o-, -moz-);
 }
 
 //---------------------------
+// 混合查询 //
+
+// 查询单个Map中的列表内容
+@function queryListForMap($map: (), $key: 'any', $index: 1) {
+    @return nth(map-get($map, $key), $index);
+}
+
+//---------------------------
 // 计算生成 //
 
 // 计算最小宽度与设计稿字体形成的比例
@@ -180,6 +188,16 @@ $BrowserTypeList: (-webkit-, -o-, -moz-);
 @mixin MoreNthChild($el: '*', $arrayNumber: 12, $differ: (), $cel: 'i') {
     @for $i from 1 through $arrayNumber {
         #{$el + ':nth-child(' + $i + ') ' + $cel} {
+            @include choseList_ForMap($differ, $i);
+            @content;
+        }
+    }
+}
+
+// 同胞元素生成器
+@mixin MoreNthSiblings($el: '*', $arrayNumber: 12, $differ: ()) {
+    @for $i from 1 through $arrayNumber {
+        #{$el}:nth-of-type(#{$i}) {
             @include choseList_ForMap($differ, $i);
             @content;
         }

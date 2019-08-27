@@ -107,7 +107,7 @@
 @mixin bg_sizeBg($url: 'http://temp.im/100x100', $sw: auto, $sh: auto) {
     background: {
         image: url($url);
-        size: $sw, $sh;
+        size: $sw $sh;
         repeat: no-repeat;
     }
 }

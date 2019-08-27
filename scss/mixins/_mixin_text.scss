@@ -1,6 +1,6 @@
 //---------------------------
 // 文本模块 //
-@import '../function/function';
+@import 'function';
 // 文本属性内容
 $AN: (
 'color',
@@ -239,13 +239,4 @@ $AN: (
 // 字体加粗
 @mixin cfzlh_fw($c: #7E50BD, $fz: .12rem, $lh: .12rem, $fw: 500) {
     @include CM(GetFourAN(1, 2, 6, 7), ($c, $fz, $lh, $fw));
-}
-//---------------------------
-// 扩展模块 //
-
-// 文本显示控制
-@mixin textOverFlow() {
-    white-space: nowrap; 
-    text-overflow: ellipsis;
-    overflow: hidden;
 }

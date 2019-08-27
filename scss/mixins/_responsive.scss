@@ -1,49 +1,58 @@
 @import 'mixin';
 
-
 // rem适配
-@mixin rem($w: 750) {
-    
+@mixin rem($w: 750, $max: 1440, $min: 320) {
+
     body {
         font-size: .12rem;
     }
-    // 原稿
-    @include max_w($w + px) {
-        html {
-            font-size: 100px;
+
+    @for $px from floor($min/10) through floor($max/10) {
+        @if($px==floor($min/10)) {
+
+            // 最小像素适配
+            @include max_w($min + px) {
+                html {
+                    min-width: $min + px;
+                    font-size: round($min / $w * 100) + px;
+                }
+            }
         }
+
+        @else if($px==floor($max/10)) {
+
+            // 最大像素适配
+            @include min_w($max + px) {
+                html {
+                    max-width: $max + px;
+                    margin: 0 auto;
+                    font-size: round($max / $w * 100) + px;
+                }
+            }
+        }
+
+        @include math_minWidth($px*10px, $w);
     }
-    // 320像素适配
-    @include math_minWidth(320px, $w);
-    // 360像素适配
-    @include math_minWidth(360px, $w);
-    // 375像素适配
-    @include math_minWidth(375px, $w);
-    // 414像素适配
-    @include math_minWidth(414px, $w);
-    // 750像素适配
-    @include math_minWidth(750px, $w);
-    // 768像素适配
-    @include math_minWidth(768px, $w);
-    // 1024像素适配
-    @include math_minWidth(1024px, $w);
-    // 1080像素适配
-    @include math_minWidth(1080px, $w);
-    // 1280像素适配
-    @include math_minWidth(1280px, $w);
-    // 最大像素适配
-    @include min_w(1480px) {
-        @include math_minWidth(1480px, $w);
-        html {
-            max-width: 1480px;
-            margin: 0 auto;
-        }
+}
+
+// 弹性盒子模型适配
+@mixin fb {
+
+    .f,
+    body {
+        display: flex;
     }
-    // 最小像素适配
-    @include max_w(320px) {
-        html {
-            min-width: 320px;
-            font-size: 320 / $w * 100 + 'px';
-        }
+
+    .fc {
+        @include flexColumn;
+    }
+
+    @include createSameBegin('f', (flex: (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 1)), 12) {
+        font-size: 16px;
+    }
+
+    .f-header {
+        @include flexCentent;
+
     }
 }

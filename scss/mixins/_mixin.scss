@@ -7,6 +7,8 @@
 //----------------------------------------------------------------------
 //---------------------------
 // 媒体查询 //
+//---------------------------
+// 媒体查询 //
 
 // 最小宽度
 @mixin min_w($w: 320px) {
@@ -37,12 +39,16 @@
     @include createBox($w, $h);
     margin: 0 auto;
 }
-// 文本显示控制
-@mixin textOverFlow($w: auto) {
-    @include createBox($w);
+// 文本剪裁
+@mixin textHidden {
     white-space: nowrap; 
     text-overflow: ellipsis;
     overflow: hidden;
+}
+// 文本显示控制
+@mixin textOverFlow($w: auto) {
+    @include createBox($w);
+    @include textHidden;
 }
 // 气泡
 @mixin bubble($fc, $bgc, $bubbleWidth, $radius) {
