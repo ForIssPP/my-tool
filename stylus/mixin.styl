@@ -1,0 +1,90 @@
+box(w = null, h = null, bgc = null, brd = null, rds = null, sdw = null, opt = null)
+  if w
+    width w
+
+  if h
+    height h
+
+  if rds
+    border-radius rds
+
+  if brd
+    border brd
+
+  if sdw
+    box-shadow sdw
+
+  if opt
+    opacity opt
+
+  if bgc
+    background-color bgc
+
+round(diam = 30, defaultType = px)
+  box(unit(diam, defaultType), unit(diam, defaultType), rds: 50%)
+
+flex(fd = row, al = flex-start, jc = al)
+  display flex
+  flex-direction fd
+  align-items al
+  justify-content jc
+
+position(p = relative, t = null, r = null, b = null, l = null)
+  position p
+
+  if t
+    top t
+
+  if r
+    right r
+
+  if b
+    bottom b
+
+  if l
+    left l
+
+centerPosition(w, h, where = 'tr', p = absolute)
+  if where == 'tr'
+    position p 50% 50%
+
+  if where == 'tl'
+    position(p, 50%, l: 50%)
+
+  if where == 'br'
+    position(p, r: 50%, b: 50%)
+
+  if where == 'bl'
+    position(p, b: 50%, l: 50%)
+
+  box w h
+  margin-top (-(w / 2))
+  margin-left (-(h / 2))
+
+typeset(c = null, fz = null, fw = null, ta = null, lh = null, ls = null, ti = null, ws = null, us = null)
+  if c
+    color c
+
+  if fz
+    font-size fz
+
+  if lh
+    line-height lh
+
+  if ta
+    text-align ta
+
+  if fw
+    font-weight fw
+
+  if ls
+    letter-spacing ls
+
+  if ti
+    text-indent ti
+
+  if ws
+    white-space ws
+
+  if us
+    user-select us
