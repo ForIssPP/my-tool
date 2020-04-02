@@ -1,0 +1,13 @@
+{
+  "name": "my-tool",
+  "version": "1.0.0",
+  "description": "css tools",
+  "main": "null",
+  "repository": "https://github.com/ForIssPP/my-tool.git",
+  "author": "siykt <cnsiykt@163.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "node-sass": "^4.13.1",
+    "stylus": "^0.54.7"
+  }
+}
