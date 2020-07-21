@@ -12,7 +12,7 @@ interface LoopFindError {
 }
 
 export default class LoopFind {
-  private _errorCount: number = 10;
+  private _errorCount: number = 0;
 
   private _query: QueryHandler;
 
