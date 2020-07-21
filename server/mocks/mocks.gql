@@ -1,0 +1,14 @@
+type Query {
+  student: [Student]
+}
+
+type Student {
+  age: Int!
+  name: String!
+  test: Float!
+  books: [Books]
+}
+
+type Books {
+  name: String!
+}
