@@ -4,9 +4,9 @@ bsLineHeight = 1.42857143
 
 bsBtn(w = auto, h = auto, fc = #fff, bgc = #007bff, rds = 4px)
   display inline-block
-  vertical-align middle
   margin-bottom 0
   padding 6px 12px
+  vertical-align middle
   typeset(fc, 14px, 400, center, bsLineHeight, ws: nowrap, us: none)
   box(w, h, bgc, rds: rds, brd: 1px solid bgc)
   cursor pointer
@@ -18,11 +18,26 @@ bsBtn(w = auto, h = auto, fc = #fff, bgc = #007bff, rds = 4px)
 
 bsInput(w = 100px)
   padding 6px 12px
+  transition border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s
   typeset #555, 14px, 500, , bsLineHeight
   box w, 34px, #fff, 1px solid #ccc, 4px, inset 0 1px 1px #00000013
-  transition border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s
 
   &:focus
-    border-color #66afe9
     outline 0
+    border-color #66afe9
     box-shadow inset 0 1px 1px #00000013, 0 0 8px #66afe999
+
+bsCheckBox(activeBgc = #409eff)
+  position relative
+  display inline-block
+  outline none
+  vertical-align middle
+  line-height 1
+  cursor pointer
+
+  input
+    box(0, 0, ops: 0)
+    position absolute
+    z-index -1
+    margin 0
+    outline none
