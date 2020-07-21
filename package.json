@@ -9,5 +9,8 @@
   "devDependencies": {
     "node-sass": "^4.13.1",
     "stylus": "^0.54.7"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }
