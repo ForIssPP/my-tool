@@ -13,15 +13,8 @@ const schema = buildSchema(mockGql.toString());
 
 const mockData = {
   users: ({ id }) => (
-    console.log('query id ->', id),
-    [
-      new User(
-        new User(new User(), new User()),
-        new User(new User()),
-        new User()
-      ),
-    ]
-  ),
+    console.log('query id ->', id), [new User(new User(new User(), new User()), new User(new User()), new User())]
+  )
 };
 
 app.use(
@@ -29,7 +22,7 @@ app.use(
   graphqlHTTP({
     schema: schema,
     rootValue: mockData,
-    graphiql: true,
+    graphiql: true
   })
 );
 

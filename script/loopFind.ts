@@ -18,25 +18,18 @@ export default class LoopFind {
 
   option: LoopFindOption = {
     time: 100,
-    maxErrorCount: 10,
+    maxErrorCount: 10
   };
 
-  constructor(
-    query: QueryHandler = id => document.querySelectorAll(id),
-    option: LoopFindOption
-  ) {
+  constructor(query: QueryHandler = id => document.querySelectorAll(id), option: LoopFindOption) {
     this._query = query;
     this.option = {
       ...this.option,
-      ...option,
+      ...option
     };
   }
 
-  private _find(
-    id: string,
-    resolve: (value: NodeList) => void,
-    reject: (error: LoopFindError) => void
-  ) {
+  private _find(id: string, resolve: (value: NodeList) => void, reject: (error: LoopFindError) => void) {
     const findEl = this._query(id);
     if (findEl?.length) return resolve(findEl);
 
@@ -44,7 +37,7 @@ export default class LoopFind {
       return reject({
         name: id,
         message: '[LoopFindError]: 超出错误上限',
-        option: this.option,
+        option: this.option
       });
 
     this._errorCount++;
@@ -52,8 +45,6 @@ export default class LoopFind {
   }
 
   run(id: string) {
-    return new Promise<NodeList>((resolve, reject) =>
-      this._find(id, resolve, reject)
-    );
+    return new Promise<NodeList>((resolve, reject) => this._find(id, resolve, reject));
   }
 }
