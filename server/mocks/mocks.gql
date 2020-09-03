@@ -1,14 +1,13 @@
+# 基本查询类型 所有可以查询的基类都应当在此定义
 type Query {
-  student: [Student]
+  users(id: ID!): [User]
 }
 
-type Student {
-  age: Int!
+type User {
+  id: ID!
+  avatar: String!
   name: String!
-  test: Float!
-  books: [Books]
-}
-
-type Books {
-  name: String!
+  address: String
+  description: String
+  friend: [User]
 }
