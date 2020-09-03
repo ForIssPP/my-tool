@@ -4,7 +4,7 @@ import is360Browser from './is360Browser';
  * 使用 userAgent 获取当前国内常用浏览器的名称
  */
 export default function getBrowserName() {
-  let browserType;
+  let browserType: string = 'None';
   const ua = navigator.userAgent.toLowerCase();
   const BROWSER_NAMES = [
     'IE',
@@ -42,10 +42,8 @@ export default function getBrowserName() {
       if (re.some(r => r.test(ua))) {
         browserType = BROWSER_NAMES[index];
       }
-    } else {
-      if (re.test(ua)) {
-        browserType = BROWSER_NAMES[index];
-      }
+    } else if (re.test(ua)) {
+      browserType = BROWSER_NAMES[index];
     }
   });
 
