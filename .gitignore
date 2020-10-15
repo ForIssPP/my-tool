@@ -3,3 +3,4 @@ yarn.lock
 .vscode/
 views/
 dist/
+__pycache__/
