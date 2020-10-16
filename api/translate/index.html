@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta charset="UTF-8" />
+    <title>Translate</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/theme-chalk/index.css" rel="stylesheet" />
+    <link href="./static/index.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="app">
+      <el-card>
+        <div slot="header">
+          <h1>
+            {{ $t('title') }}
+            <el-dropdown @command="toggleLanguage">
+              <span class="dropdown-link"> {{ $tc('lang') }}<i class="el-icon-arrow-down el-icon--right"></i> </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="zh">中文</el-dropdown-item>
+                <el-dropdown-item command="en">English</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </h1>
+        </div>
+        <el-image class="logo" fit="cover" src="https://www.churchchina.org/wp-content/uploads/1.%E7%BF%BB%E8%AF%91-660x330.jpg">
+        </el-image>
+        <el-form label-position="top" :rules="rules" ref="form" :model="form">
+          <el-form-item :label="$t('title')" prop="postData">
+            <el-input type="textarea" rows="7" v-model="form.postData" :placeholder="$t('message.placeholder')"></el-input>
+          </el-form-item>
+          <el-form-item :label="$t('message.language')">
+            <el-row>
+              <el-col :xs="24" :span="18">
+                <el-row type="flex">
+                  <el-select v-model="form.from">
+                    <el-option v-for="type in types" :key="type.value" :label="type.label" :value="type.value"></el-option>
+                  </el-select>
+                  <el-button style="margin: 0 5px" type="primary" @click="toggle" icon="el-icon-refresh"></el-button>
+                  <el-select v-model="form.to">
+                    <el-option v-for="type in toTypes" :key="type.value" :label="type.label" :value="type.value"></el-option>
+                  </el-select>
+                </el-row>
+              </el-col>
+              <el-col :xs="24" :span="6">
+                <el-row type="flex" justify="end">
+                  <el-button-group>
+                    <el-button type="primary" @click="submit">{{ $t('button.submit') }}</el-button>
+                    <el-button @click="reset">{{ $t('button.reset') }}</el-button>
+                  </el-button-group>
+                </el-row>
+              </el-col>
+            </el-row>
+          </el-form-item>
+          <el-form-item v-show="result" :label="$t('message.result')">
+            <el-input type="textarea" rows="7" v-model="result" disabled></el-input>
+          </el-form-item>
+        </el-form>
+      </el-card>
+    </div>
+    <script src="https://cdn.bootcss.com/vue/2.6.11/vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue-i18n/8.22.0/vue-i18n.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/index.js"></script>
+    <script src="./static/index.js"></script>
+  </body>
+</html>
