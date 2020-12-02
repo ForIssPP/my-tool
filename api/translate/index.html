@@ -9,7 +9,7 @@
     <meta charset="UTF-8" />
     <title>Translate</title>
     <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/theme-chalk/index.css" rel="stylesheet" />
-    <link href="./static/index.css" rel="stylesheet" />
+    <link href="/static/index.css" rel="stylesheet" />
   </head>
   <body>
     <div id="app">
@@ -26,7 +26,7 @@
             </el-dropdown>
           </h1>
         </div>
-        <el-image class="logo" fit="cover" src="https://www.churchchina.org/wp-content/uploads/1.%E7%BF%BB%E8%AF%91-660x330.jpg">
+        <el-image class="logo" fit="cover" src="/static/logo-660x330.jpg">
         </el-image>
         <el-form label-position="top" :rules="rules" ref="form" :model="form">
           <el-form-item :label="$t('title')" prop="postData">
@@ -64,6 +64,6 @@
     <script src="https://cdn.bootcss.com/vue/2.6.11/vue.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/vue-i18n/8.22.0/vue-i18n.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/index.js"></script>
-    <script src="./static/index.js"></script>
+    <script src="/static/index.js"></script>
   </body>
 </html>
