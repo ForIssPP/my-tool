@@ -12,6 +12,7 @@ interface Conf {
   defaultExpireDate: string;
   website: {
     port: number;
+    url: string;
   };
 }
 
@@ -57,7 +58,8 @@ if (!configExists) {
       format: 'json',
       defaultExpireDate: '2099-01-01',
       website: {
-        port: 8080
+        port: 8080,
+        url: '/api/shorturl'
       }
     })
   );
@@ -88,8 +90,8 @@ if (program.startServer) {
   app.use(bodyParser.json({ limit: '1mb' }));
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use('/static', express.static('./static/'));
-  app.post('*', async (req, res) => res.json(await fetchShortURL(req.body)));
-  app.get('*', async (req, res) => res.json(await fetchShortURL(req.query as any)));
+  app.post(CONF.website.url, async (req, res) => res.json(await fetchShortURL(req.body)));
+  app.get(CONF.website.url, async (req, res) => res.json(await fetchShortURL(req.query as any)));
   app.listen(CONF.website.port, console.log.bind(null, `Website server is run http://localhost:${CONF.website.port}`));
 } else {
   const log = async () =>
