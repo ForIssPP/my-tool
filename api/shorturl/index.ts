@@ -78,7 +78,7 @@ program
   .option('-f, --format [format]', 'format参数', CONF.format)
   .option('-e, --expire-date [date]', 'expireDate参数', CONF.defaultExpireDate)
   .option('-cb, --callback [callback]', 'callback参数')
-  .option('-s, --start-server', '开启 server 服务器', false)
+  .option('-s, --start-server', '开启 server 服务器', true)
   .version('1.0.0');
 
 program.parse(process.argv);
@@ -92,7 +92,7 @@ if (program.startServer) {
   app.use('/static', express.static('./static/'));
   app.post(CONF.website.url, async (req, res) => res.json(await fetchShortURL(req.body)));
   app.get(CONF.website.url, async (req, res) => res.json(await fetchShortURL(req.query as any)));
-  app.listen(CONF.website.port, console.log.bind(null, `Website server is run http://localhost:${CONF.website.port}`));
+  app.listen(CONF.website.port, '0.0.0.0', console.log.bind(null, `Website server is run http://localhost:${CONF.website.port}`));
 } else {
   const log = async () =>
     console.log(
