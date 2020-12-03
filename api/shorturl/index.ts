@@ -78,7 +78,7 @@ program
   .option('-f, --format [format]', 'format参数', CONF.format)
   .option('-e, --expire-date [date]', 'expireDate参数', CONF.defaultExpireDate)
   .option('-cb, --callback [callback]', 'callback参数')
-  .option('-s, --start-server', '开启 server 服务器', true)
+  .option('-s, --start-server', '开启 server 服务器')
   .version('1.0.0');
 
 program.parse(process.argv);
