@@ -4,3 +4,4 @@ yarn.lock
 views/
 dist/
 __pycache__/
+.idea/
