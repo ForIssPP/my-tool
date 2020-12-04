@@ -5,11 +5,7 @@
 
 
 # useful for handling different item types with a single interface
-from scrapy.pipelines.files import FilesPipeline
-
 from .utils.mysql_cnn import CreateMysqlConnector
-
-FilesPipeline
 
 
 class OneKmnMusicsPipeline:
