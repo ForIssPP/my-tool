@@ -1,4 +1,3 @@
-import json
 from utils.auto_submit import AutoSubmitTemplate
 
 
