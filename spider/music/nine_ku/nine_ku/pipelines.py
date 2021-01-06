@@ -38,13 +38,9 @@ class NineKuAuthorPipeline:
         self.db.connect.commit()
         return item
 
-    def close_spider(self, _spider):
-        self.db.cursor.close()
-        self.db.connect.close()
-
 
 class NineKuMusicDownloadPipeline(FilesPipeline):
-    __r = re.compile(r'[<>\?\|\-:\*/\0\f\t\n\r\v\\]')
+    __r = re.compile(r'[<>?|\-:*/\0\f\t\n\r\v\\]')
 
     def file_path(self, request, response=None, info=None, *, item=None):
         media_ext = os.path.splitext(request.url)[1]
@@ -59,8 +55,6 @@ class NineKuMusicDownloadPipeline(FilesPipeline):
             media_type = mimetypes.guess_type(request.url)[0]
             if media_type:
                 media_ext = mimetypes.guess_extension(media_type)
-
-
 
         return f'{media_guid}{media_ext}'
 
@@ -83,7 +77,3 @@ class NineKuMusicsPipeline:
             self.db.cursor.execute(sql)
             self.db.connect.commit()
             return item
-
-    def close_spider(self, _spider):
-        self.db.cursor.close()
-        self.db.connect.close()
