@@ -20,7 +20,7 @@ if __name__ == '__main__':
     # import pandas
     from random import randint
 
-    config_path = Path('../data/config.json')
+    config_path = Path('../assets/config.json')
     today_upload_count = int(input('请输入个数： '))
 
     if not config_path.exists():
@@ -29,7 +29,7 @@ if __name__ == '__main__':
     if str(today_upload_count)[-1] == '0':
         today_upload_count += randint(1, 9)
 
-    with Path('../data/phone.txt').open('r') as file:
+    with Path('../assets/phone.txt').open('r') as file:
         phones = file.read().split('\n')
 
     module = Default()

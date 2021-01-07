@@ -5,3 +5,4 @@ views/
 dist/
 __pycache__/
 .idea/
+assets/
