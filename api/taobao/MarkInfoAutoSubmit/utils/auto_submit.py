@@ -129,9 +129,8 @@ class AutoSubmit(AutoLogin, AutoUploadImage):
         args = list(args)
         if len(params) != len(args):
             raise ValueError(f'输入的参数键值对错误！！！ params -> {params}, args -> {args}')
-        while params:
-            param = params.pop()
-            value = args.pop()
+        for i, param in enumerate(params):
+            value = args[i]
             self.submit_params[param] = value
 
     def __init__(self, user_account, psd, params, *args):
