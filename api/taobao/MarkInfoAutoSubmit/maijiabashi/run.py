@@ -1,5 +1,3 @@
-import requests
-
 from utils.auto_submit import AutoOpenBrowserModules, AutoSubmit
 
 

@@ -4,7 +4,7 @@ import re
 import time
 from pathlib import Path
 import requests
-from utils.auto_submit import AutoSubmit, create_upload_boundary_img_files
+from utils.auto_submit import AutoSubmit
 
 ACCEPT = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9'
 
