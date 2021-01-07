@@ -32,6 +32,10 @@ class AutoModules:
         self.cookies = {}
         self.logger = logger
 
+    def update_content_type(self, content_type):
+        self.headers['Content-Type'] = content_type
+        return self
+
     def fetch(self, url, **kw):
         self.logger.debug(f'----------------------------------')
         self.logger.debug(f'{"Fetch url".center(self.LOG_SPACE_COUNT)}-> {url}')
@@ -114,10 +118,6 @@ class AutoSubmit(AutoLogin, AutoUploadImage):
 
     def created(self):
         pass
-
-    def update_content_type(self, content_type):
-        self.headers['Content-Type'] = content_type
-        return self
 
     def get_csrf_token(self, response):
         m = re.search('name="csrf-token" content="(.*?)"', response.text)
