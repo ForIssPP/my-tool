@@ -6,11 +6,11 @@ from scrapy.crawler import CrawlerRunner
 from scrapy.utils.log import configure_logging
 
 import pinyin
-from music.nine_ku.nine_ku.db import DB
+from nine_ku.db import DB
 import json
 
-from music.nine_ku.nine_ku.spiders.author import AuthorSpider
-from music.nine_ku.nine_ku.spiders.musics import MusicsSpider
+from nine_ku.spiders.author import AuthorSpider
+from nine_ku.spiders.musics import MusicsSpider
 
 
 def write_love_author():
@@ -19,16 +19,44 @@ def write_love_author():
         data = json.loads(f.read(), encoding='utf-8')
         love_author_data = data['love_author'].split(',')
 
-    sql = 'INSERT IGNORE INTO `author` (name, initial_pinyin, status) VALUES (%s, %s, %s)'
+    db.cursor.execute('''
+    CREATE TABLE IF NOT EXISTS `author` (
+        `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+        `initial_pinyin` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT '',
+        `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT '',
+        `area` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT '',
+        `birthday` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT '',
+        `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+        `status` int(11) NOT NULL DEFAULT '0',
+        PRIMARY KEY (`name`)
+    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+    ''')
+    db.cursor.execute('''
+    CREATE TABLE IF NOT EXISTS `musics` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT '',
+        `author` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT '',
+        `path` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+        `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+        `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+        `update_date` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+        PRIMARY KEY (`id`)
+    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+    ''')
 
+    sql = 'INSERT IGNORE INTO `author` (name, initial_pinyin, status) VALUES (%s, %s, %s)'
     db.cursor.executemany(sql, [(x, pinyin.get_initial(x[0]).lower(), 0) for x in love_author_data])
+    # db.cursor.close()
+    # db.connect.close()
 
 
 @defer.inlineCallbacks
 def crawl(runner):
+    yield runner.crawl(AuthorSpider)
     yield runner.crawl(MusicsSpider)
     reactor.stop()
-    os.system('shutdown /p')
+    # exit()
+    # os.system('shutdown /p')
 
 
 def main():

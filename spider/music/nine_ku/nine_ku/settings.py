@@ -11,6 +11,7 @@ BOT_NAME = 'nine_ku'
 
 SPIDER_MODULES = ['nine_ku.spiders']
 NEWSPIDER_MODULE = 'nine_ku.spiders'
+HTTPERROR_ALLOWED_CODES = [301]
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # USER_AGENT = 'nine_ku (+http://www.yourdomain.com)'
