@@ -8,6 +8,7 @@ from config import mark_param_keys, mark_type_keys, RESTART_INTERVAL, platform_k
 from utils.download import Download
 import pandas
 
+logging.getLogger().setLevel(logging.INFO)
 initial_dir = os.getcwd()
 file_types = (['png', '*.png'], ['jpg', '*.jpg'], ['gif', '*.gif'])
 
@@ -60,7 +61,9 @@ def submit(api_key: str, account: str, password: str, file_paths: list[str], *pa
 
     instance = script(account, password, *params)
     instance.logger.setLevel(logging.INFO)
+    instance.logger.info(f'开始提交{api_key}平台...')
     instance.run(file_paths)
+    instance.logger.info(f'{api_key}平台提交成功')
 
 
 def run(account_info_list, auto_mark=True):
@@ -73,18 +76,26 @@ def run(account_info_list, auto_mark=True):
                 file_paths = []
                 while images:
                     file_paths.append(Download(images.pop()).save())
-                for api_key, account, psd in account_info_list:
-                    submit(api_key, account, psd, file_paths, wwid, mark_type_keys[api_key], content)
+                for info in account_info_list:
+                    if info.all():
+                        api_key = info[0]
+                        submit(*info, file_paths, mark_param_keys[api_key], wwid, mark_type_keys[api_key], content)
         else:
             for api_key, account, psd in account_info_list:
                 submit(api_key, account, psd, fetch_local_file_paths())
+        logging.info(f'开始等待 {RESTART_INTERVAL}s️... ')
         sleep(RESTART_INTERVAL)
 
 
 def parse_account_info(info):
-    info[0] = platform_keys[info[0]]
+    platform = info[0]
+    if platform in platform_keys:
+        info[0] = platform_keys[platform]
+    else:
+        logging.warning(f'存在未添加的平台: {platform}')
+        info[0] = None
     return info
 
 
 if __name__ == '__main__':
-    run(map(parse_account_info, pandas.read_csv('../assets/phone.csv').dropna(axis=1).values))
+    run(list(map(parse_account_info, pandas.read_csv('./assets/account_info.csv').dropna(axis=1).values)))
