@@ -45,7 +45,10 @@ class Default(AutoSubmit, AutoOpenBrowserModules):
         return self.wait(1)
 
     def print_result(self):
-        self.logger.info(f"{'Runtime Result'.center(self.LOG_SPACE_COUNT)}-> {self.find('result').text}")
+        try:
+            self.logger.info(f"{'Runtime Result'.center(self.LOG_SPACE_COUNT)}-> {self.find('result').text}")
+        except:
+            pass
         return self
 
     def run(self, file_paths):
