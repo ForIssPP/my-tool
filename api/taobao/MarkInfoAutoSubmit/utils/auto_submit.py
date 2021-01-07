@@ -88,7 +88,13 @@ class AutoUploadImage(AutoModules):
         return files
 
     def check_file_paths(self, file_paths):
-        if len(self.upload_img_file_keys) != len(file_paths):
+        key_len, paths_len = len(self.upload_img_file_keys), len(file_paths)
+        if key_len != paths_len:
+            self.logger.warning(f'上传图片的长度与必须的 key 长度不相等: key_len {key_len} != paths_len {paths_len}')
+            if key_len > paths_len:
+                file_paths.extends(file_paths[-1] * key_len - paths_len)
+            else:
+                file_paths = file_paths[:key_len]
             raise ValueError(f'上传图片的长度与必须的 key 长度相等: {len(self.upload_img_file_keys)} != {len(file_paths)}')
         for f in map(Path, file_paths):
             if not f.exists():
