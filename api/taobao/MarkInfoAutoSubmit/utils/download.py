@@ -51,7 +51,7 @@ class Download:
             self.logger.warning(f'文件已存在，此操作将会替换该文件')
         fn.write_bytes(self.res.content)
         self.download_name = fn
-        return fn.name
+        return str(fn.absolute())
 
 
 if __name__ == '__main__':
