@@ -242,7 +242,7 @@ class AutoSubmitTemplate(AutoSubmit):
     login_api = '/pc/user/login'
     upload_img_url = '/pc/mark/upload'
     login_params = ['userName', 'password']
-    upload_img_file_keys = ['chatUrl2']
+    upload_img_file_keys = ['chatUrl', 'chatUrl2', 'refundUrl']
     submit_url = '/pc/mark/save'
 
     def login(self, key='json'):

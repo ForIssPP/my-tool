@@ -3,7 +3,6 @@ from utils.auto_submit import AutoSubmitTemplate
 
 class Default(AutoSubmitTemplate):
     domain = 'https://api.dshangyan.com'
-    upload_img_file_keys = ['chatUrl', 'chatUrl2', 'refundUrl']
 
 
 if __name__ == '__main__':
