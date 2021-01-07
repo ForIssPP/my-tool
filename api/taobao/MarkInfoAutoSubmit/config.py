@@ -15,3 +15,4 @@ platform_keys = {
 mark_type_keys = {'91laihama': '跑单,敲诈,', 'chadianshang': 1, 'dianshangdanao': 1, 'dshangyan': 1, 'qinchacha': 1, }
 # 重启间隔(单位秒)
 RESTART_INTERVAL = 60 * 10
+API_URL = 'http://api.weichabao.co/json/sync/mark/get?token=8bgr0DaspsVvzVgJZqakL&maxAttemptTimes=9999'
