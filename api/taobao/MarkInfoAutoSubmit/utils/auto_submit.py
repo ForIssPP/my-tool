@@ -11,8 +11,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 import requests
-from fake_useragent import UserAgent
-
+from faker import Faker
 
 logger = logging.getLogger('AutoSubmit')
 logger.setLevel(logging.DEBUG)
@@ -24,10 +23,11 @@ logger.addHandler(ch)
 class AutoModules:
     LOG_SPACE_COUNT = 30
     domain = None
+    faker = Faker()
 
     def __init__(self):
         self.headers = {
-            "User-Agent": UserAgent().random
+            "User-Agent": self.faker.user_agent()
         }
         self.cookies = {}
         self.logger = logger
@@ -39,7 +39,8 @@ class AutoModules:
     def fetch(self, url, **kw):
         self.logger.debug(f'----------------------------------')
         self.logger.debug(f'{"Fetch url".center(self.LOG_SPACE_COUNT)}-> {url}')
-        self.logger.debug(f'{"Fetch keywords".center(self.LOG_SPACE_COUNT)}-> {kw}')
+        if 'files' not in kw:
+            self.logger.debug(f'{"Fetch keywords".center(self.LOG_SPACE_COUNT)}-> {kw}')
         self.logger.debug(f'{"Fetch cookies".center(self.LOG_SPACE_COUNT)}-> {self.cookies}')
         self.logger.debug(f'{"Fetch Headers".center(self.LOG_SPACE_COUNT)}-> {self.headers}')
         result = requests.post(self.domain + url, cookies=self.cookies, headers=self.headers, **kw)
@@ -124,9 +125,18 @@ class AutoSubmit(AutoLogin, AutoUploadImage):
         if m:
             self.csrf_token = m.group(1)
 
-    def __init__(self, user_account, psd, **params):
+    def check_params(self, params, args):
+        args = list(args)
+        if len(params) != len(args):
+            raise ValueError(f'输入的参数键值对错误！！！ params -> {params}, args -> {args}')
+        while params:
+            param = params.pop()
+            value = args.pop()
+            self.submit_params[param] = value
+
+    def __init__(self, user_account, psd, params, *args):
         super().__init__(user_account, psd)
-        self.submit_params = params
+        self.check_params(params, args)
         self.created()
 
     def parse_upload_img_src(self, upload_img_src):
@@ -172,10 +182,7 @@ class AutoOpenBrowserModules(AutoModules):
         options.add_experimental_option("prefs", prefs)
         return options
 
-    def find(self, _id, find_type=By.XPATH, wait=None):
-        if not wait:
-            wait = self.driver_find_wait
-
+    def find(self, _id, find_type=By.XPATH, wait=driver_find_wait):
         self.logger.debug(f'----------------------------------')
         self.logger.debug(f'{"Find wait".center(self.LOG_SPACE_COUNT)}-> {wait}')
         self.logger.debug(f'{"Find type".center(self.LOG_SPACE_COUNT)}-> {find_type}')
@@ -187,10 +194,7 @@ class AutoOpenBrowserModules(AutoModules):
         except TimeoutException:
             self.logger.warning(f'获取元素失败 ID -> {_id}')
 
-    def finds(self, _id, find_type=By.XPATH, wait=None):
-        if not wait:
-            wait = self.driver_find_wait
-
+    def finds(self, _id, find_type=By.XPATH, wait=driver_find_wait):
         self.logger.debug(f'----------------------------------')
         self.logger.debug(f'{"Finds wait".center(self.LOG_SPACE_COUNT)}-> {wait}')
         self.logger.debug(f'{"Finds type".center(self.LOG_SPACE_COUNT)}-> {find_type}')

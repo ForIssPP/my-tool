@@ -8,7 +8,7 @@ from ..items import NineKuAuthorItem
 
 class AuthorSpider(scrapy.Spider):
     name = 'author'
-    allowed_domains = ['http://www.9ku.com/']
+    allowed_domains = ['9ku.com']
     start_url = 'http://www.9ku.com'
     _name_list = {}
     custom_settings = {
@@ -18,35 +18,43 @@ class AuthorSpider(scrapy.Spider):
     }
 
     def start_requests(self):
-        db = DB()
-        db.cursor.execute(
+        d = DB()
+        d.cursor.execute(
             'SELECT `name`, `url`, `initial_pinyin` FROM `author` WHERE status = 0 ORDER BY initial_pinyin'
         )
-        authors = db.cursor.fetchall()
+        authors = d.cursor.fetchall()
         for name, url, initial_pinyin in authors:
             if not url:
                 url = f'http://baidu.9ku.com/song/?key={name}'
-                yield Request(url, dont_filter=True, meta={'name': name}, callback=self.parse_author_page)
+                meta = {'name': name, 'initial_pinyin': initial_pinyin}
+                yield Request(url, dont_filter=True, meta=meta, callback=self.parse_author_page)
             else:
                 yield Request(url, dont_filter=True, callback=self.parse, meta={'name': name})
 
-    def crawl_url(self, name, response):
-        url = response.css('a.singerName::attr(href)').extract_first()
-        self.logger.info(f'查询歌手 -> {name} 成功 url: {url}')
-        return Request(url, dont_filter=True, callback=self.parse, meta={'name': name})
+    def parse_all_author_page(self, response):
+        name = response.meta.get('name')
+        links = response.css('.filter_list .t-t')
+        for link in links:
+            if link.css('::text').extract_first() == name:
+                url = self.start_url + link.css('::attr(href)').extract_first()
+                self.logger.info(f'歌手: {name} 的访问连接为: {url}')
+                return Request(url, dont_filter=True, callback=self.parse, meta={'name': name})
 
     def parse_author_page(self, response):
         name = response.meta.get('name')
-        first_link_name = response.css('a.singerName::text').extract_first()
-        if name in first_link_name:
-            yield self.crawl_url(name, response)
+        if response.status == 302 or response.status == 301:
+            self.logger.warning(f'连接已重置，尝试使用首字母查询模式')
+            initial_pinyin = response.meta.get('initial_pinyin')
+            url = f'http://www.9ku.com/geshou/all-{initial_pinyin}-all.htm'
+            return Request(url, dont_filter=True, callback=self.parse_all_author_page, meta={'name': name})
         else:
-            names = response.css('a.singerName::text').extract()
-            for link_name in names:
-                if name in link_name:
-                    yield self.crawl_url(name, response)
-                    break
-            # self.logger.info(f'查询歌手 -> {name} 失败')
+            links = response.css('a.singerName')
+            for link in links:
+                if name in link.css('::text').extract_first():
+                    url = link.css('::attr(href)').extract_first()
+                    self.logger.info(f'查询歌手 -> {name} 成功 url: {url}')
+                    return Request(url, dont_filter=True, callback=self.parse, meta={'name': name})
+            self.logger.info(f'查询歌手 -> {name} 失败')
 
     def parse(self, response, **kwargs):
         self.logger.info('------ 开始写入数据 ------')
@@ -76,17 +84,4 @@ class AuthorSpider(scrapy.Spider):
         self.logger.info(f'description: {description}')
         self.logger.info(f'songs: {songs}')
         self.logger.info(f'song_ids: {song_ids}')
-        # file_urls = []
-        # while ids:
-        #     song_id = ids.pop(0)
-        #     url = f'http://www.9ku.com/html/playjs/31/{song_id}.js'
-        #     file_url = self.parse_song_page(url)
-        #     self.logger.info(f'mp3 -> {file_url}')
-        #     file_urls.append(file_url)
         yield items
-    # def parse_song_page(self, url):
-    #     response = requests.get(url)
-    #     context = json.loads(response.text[1:-1])
-    #     url = context['wma']
-    #     # mp3_pic = context['zjpic']
-    #     return url

@@ -1,5 +1,5 @@
 import json
-
+import re
 import scrapy
 from scrapy.http import Request
 from ..db import DB
@@ -17,16 +17,20 @@ class MusicsSpider(scrapy.Spider):
         'FILES_STORE': './dist/downloads/',
         'FILES_EXPIRES': 90
     }
+    replace_url_re = re.compile(r'^//')
 
     def start_requests(self):
-        db = DB()
+        d = DB()
         # sql = 'SELECT `id`, `name`, `author`, `url` FROM nineku_music.`musics` WHERE not path LIMIT 500'
         sql = "SELECT `id`, `name`, `author`, `url` FROM nineku_music.`musics` WHERE url LIKE '%.js'"
-        db.cursor.execute(sql)
-        musics = db.cursor.fetchall()
+        d.cursor.execute(sql)
+        musics = d.cursor.fetchall()
         if musics:
             for music_id, name, author, url in musics:
                 yield Request(url, meta={'name': name, 'music_id': music_id, 'author': author}, dont_filter=True)
+
+        d.cursor.close()
+        d.connect.close()
 
     def parse(self, response, **kwargs):
         items = NineKuMusicsItem()
@@ -34,7 +38,8 @@ class MusicsSpider(scrapy.Spider):
         author = response.meta.get('author')
         music_id = response.meta.get('music_id')
         context = json.loads(response.text[1:-1])
-        url = context['wma']
+        url = self.replace_url_re.sub('http://', context['wma'])
+        self.logger.info(f'下载地址为 -> {url}')
         if url == '0':
             self.logger.warning(f'获取歌曲失败: {author}-{name}')
         else:
