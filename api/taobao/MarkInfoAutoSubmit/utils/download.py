@@ -28,7 +28,8 @@ class Download:
         if not self.download_dir.exists():
             self.download_dir.mkdir()
         if self.res.status_code != 200:
-            raise DownloadError(f'下载错误, 返回码为: {self.res.status_code}')
+            logger.error(f'{url}下载错误, 返回码为: {self.res.status_code}')
+            raise DownloadError(f'{url}下载错误, 返回码为: {self.res.status_code}')
 
     def parse_suffix(self):
         suffix = self.parse_type_re.search(self.url)

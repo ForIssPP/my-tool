@@ -5,7 +5,7 @@ from time import sleep
 from tkinter import filedialog
 import requests
 from config import mark_param_keys, mark_type_keys, RESTART_INTERVAL, platform_keys, API_URL
-from utils.download import Download
+from utils.download import Download, DownloadError
 import pandas
 
 logging.getLogger().setLevel(logging.INFO)
@@ -14,7 +14,7 @@ file_types = (['png', '*.png'], ['jpg', '*.jpg'], ['gif', '*.gif'])
 
 
 def choose_img():
-    print('请选择要上传的文件')
+    logging.info('请选择要上传的文件')
     return filedialog.askopenfilename(initialdir=initial_dir, title='请选择打标图片', filetypes=file_types)
 
 
@@ -54,16 +54,16 @@ def fetch_api_mark_info():
         return res
 
 
-def submit(api_key: str, account: str, password: str, file_paths: list[str], *params):
+def submit(api_key, account, password, file_paths, *params):
     script = getattr(import_module(f'{api_key}.run'), 'Default', None)
     if not script:
         raise ValueError(f'Script {api_key} 不存在')
 
     instance = script(account, password, *params)
     instance.logger.setLevel(logging.INFO)
-    instance.logger.info(f'开始提交{api_key}平台...')
+    logging.info(f'开始提交{api_key}平台...')
     instance.run(file_paths)
-    instance.logger.info(f'{api_key}平台提交成功')
+    logging.info(f'{api_key}平台提交成功')
 
 
 def run(account_info_list, auto_mark=True):
@@ -75,7 +75,14 @@ def run(account_info_list, auto_mark=True):
                 wwid, content, images = data[keys[0]], data[keys[1]], data[keys[2]]
                 file_paths = []
                 while images:
-                    file_paths.append(Download(images.pop()).save())
+                    logging.info('\n开始下载文件')
+                    try:
+                        file_paths.append(Download(images.pop()).save())
+                    except DownloadError as err:
+                        logging.exception(err)
+                        logging.error('下载文件失败')
+                if not file_paths:
+                    raise ValueError('文件列表为空, 请检查文件下载情况')
                 for info in account_info_list:
                     if info.all():
                         api_key = info[0]
@@ -98,4 +105,8 @@ def parse_account_info(info):
 
 
 if __name__ == '__main__':
-    run(list(map(parse_account_info, pandas.read_csv('./assets/account_info.csv').dropna(axis=1).values)))
+    try:
+        run(list(map(parse_account_info, pandas.read_csv('./assets/account_info.csv').dropna(axis=1).values)))
+    except Exception as err:
+        logging.error('任务已失败')
+        logging.exception(err)
