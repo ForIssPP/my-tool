@@ -12,14 +12,15 @@ class Default(AutoModules):
     last_count = json.loads(config_path.read_text())['last_count']
 
     def run(self, user_phone_no: str):
-        # XhST6K
+        # invitation_code = 'XhST6K'
+        # invitation_code = '5lU55n'
+        invitation_code = 'jvu3ei'
         self.update_content_type('application/json;charset=UTF-8')
         return self.fetch('/mp/api/channelagent/channelinviteuser/newUserNC', json={
-            "userPhoneNo": user_phone_no, "invitationCode": "5lU55n"
+            "userPhoneNo": user_phone_no, "invitationCode": invitation_code
         })
 
     def send(self, phone):
-        exit()
         if not config_path.exists():
             config_path.write_text('{"last_count": 0}')
 
@@ -34,8 +35,8 @@ class Default(AutoModules):
 
 if __name__ == '__main__':
     config_path = Path('../assets/config.json')
-    # today_upload_count = int(input('请输入个数： '))
-    today_upload_count = 1
+    # today_upload_count = 1
+    today_upload_count = int(input('请输入个数： '))
 
     if str(today_upload_count)[-1] == '0':
         today_upload_count += randint(1, 9)

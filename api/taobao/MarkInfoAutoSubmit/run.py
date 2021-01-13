@@ -49,7 +49,7 @@ def fetch_local_file_paths():
 def fetch_api_mark_info():
     url = API_URL
     res = requests.get(url).json()
-    # script = get_script(api_key)
+    logging.info(f'result -> {res}')
     if res['status'] and res['data']:
         return res
 
@@ -59,9 +59,10 @@ def submit(api_key, account, password, file_paths, *params):
     if not script:
         raise ValueError(f'Script {api_key} 不存在')
 
+    print('\n\n')
     instance = script(account, password, *params)
     instance.logger.setLevel(logging.INFO)
-    logging.info(f'开始提交{api_key}平台...')
+    logging.info(f'---------- 开始提交{api_key}平台... ----------')
     instance.run(file_paths)
     logging.info(f'{api_key}平台提交成功')
 
@@ -75,7 +76,7 @@ def run(account_info_list, auto_mark=True):
                 wwid, content, images = data[keys[0]], data[keys[1]], data[keys[2]]
                 file_paths = []
                 while images:
-                    logging.info('\n开始下载文件')
+                    logging.info('开始下载文件')
                     try:
                         file_paths.append(Download(images.pop()).save())
                     except DownloadError as err:

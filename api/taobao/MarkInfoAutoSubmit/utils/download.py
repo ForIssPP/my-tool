@@ -49,7 +49,7 @@ class Download:
             key = re.search(r'(\w+)$', self.url).group(0)
         fn = self.download_dir / f'download-{key}.{self.parse_suffix()}'
         if fn.exists():
-            self.logger.warning(f'文件已存在，此操作将会替换该文件')
+            self.logger.warning('文件已存在，此操作将会替换该文件')
         fn.write_bytes(self.res.content)
         self.download_name = fn
         return str(fn.absolute())
