@@ -157,7 +157,7 @@ class AutoSubmit(AutoLogin, AutoUploadImage):
             result = self.fetch(self.submit_url, json=data)
         else:
             result = self.fetch(self.submit_url, data=data)
-        self.logger.info(f'{"Submit Data".center(self.LOG_SPACE_COUNT)}-> {data}')
+        self.logger.debug(f'{"Submit Data".center(self.LOG_SPACE_COUNT)}-> {data}')
         self.logger.info(f'{"Submit Result".center(self.LOG_SPACE_COUNT)}-> {result.text}')
         return result
 
