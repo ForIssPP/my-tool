@@ -77,7 +77,9 @@ new Vue({
           }
           if (this.duration === this.currentTime) {
             if (this.loopPlay) {
-              this.play();
+              setTimeout(() => {
+                this.play();
+              }, 500);
             } else {
               this.isPlaying = false;
             }
@@ -94,16 +96,12 @@ new Vue({
       );
     },
     play() {
-      if (!this.isPlaying) {
-        this.$refs.musicPlay.play();
-        this.isPlaying = true;
-      }
+      this.$refs.musicPlay.play();
+      this.isPlaying = true;
     },
     pause() {
-      if (this.isPlaying) {
-        this.$refs.musicPlay.pause();
-        this.isPlaying = false;
-      }
+      this.$refs.musicPlay.pause();
+      this.isPlaying = false;
     },
     async fetchLRC() {
       if (this.songId) {
