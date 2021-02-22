@@ -133,6 +133,12 @@ new Vue({
       }
     },
     download() {
+      const loading = this.$loading({
+        lock: true,
+        text: '解析下载链接中...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
       fetch('/download/' + this.songId, { mode: 'no-cors' })
         .then(res => res.blob())
         .then(blob => {
@@ -143,6 +149,7 @@ new Vue({
           document.body.appendChild(a);
           a.click();
           a.remove();
+          loading.close();
         });
     }
   }
