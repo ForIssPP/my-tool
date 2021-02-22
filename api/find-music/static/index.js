@@ -16,6 +16,7 @@ new Vue({
     lrcTextList: [],
     isPlaying: false,
     showSlider: false,
+    loopPlay: true,
     showLrcIndex: 0
   },
   computed: {
@@ -35,10 +36,11 @@ new Vue({
           method: 'POST'
         });
         const data = await res.json();
-        if (!data.error) {
+        if (!data.error && data.length) {
           localStorage.setItem(url + key, JSON.stringify(data));
           return data;
         }
+        return [];
       }
     },
     getTime(time) {
@@ -74,7 +76,11 @@ new Vue({
             this.progress = (this.currentTime / this.duration) * 100;
           }
           if (this.duration === this.currentTime) {
-            this.isPlaying = false;
+            if (this.loopPlay) {
+              this.play();
+            } else {
+              this.isPlaying = false;
+            }
           }
           const re = new RegExp(`\\[${this.barCurrentTime}.[\\d\\.]+\\]([^\\[\\]\\d]+)\\[`);
           if (re.test(this.lrcText)) {
@@ -127,6 +133,19 @@ new Vue({
           }
         });
       }
+    },
+    download() {
+      fetch('/download/' + this.songId, { mode: 'no-cors' })
+        .then(res => res.blob())
+        .then(blob => {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.download = this.name + '.mp3';
+          a.href = url;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        });
     }
   }
 });

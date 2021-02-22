@@ -50,10 +50,10 @@
           </el-col>
         </el-row>
         <el-row class="control-bar" type="flex" justify="center">
-          <el-button icon="el-icon-caret-left"></el-button>
+          <el-button :class="{ active: loopPlay }" @click="loopPlay = !loopPlay" icon="el-icon-refresh"></el-button>
           <el-button v-show="!isPlaying" @click="play" icon="el-icon-video-play"></el-button>
           <el-button v-show="isPlaying" @click="pause" icon="el-icon-video-pause"></el-button>
-          <el-button icon="el-icon-caret-right"></el-button>
+          <el-button @click="download" icon="el-icon-download"></el-button>
           <span class="time-bar">{{ barCurrentTime }}/{{ barDurationTime }}</span>
         </el-row>
         <!-- <el-progress :stroke-width="10" :percentage="progress" :format="format"> </el-progress> -->
@@ -63,7 +63,6 @@
     </div>
     <script src="https://cdn.bootcss.com/vue/2.6.11/vue.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/index.js"></script>
-    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
     <script src="./static/index.js"></script>
   </body>

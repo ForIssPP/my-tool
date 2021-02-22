@@ -64,6 +64,12 @@ p {
   padding: 5px 10px;
 }
 
+.control-bar .el-button.active {
+  color: #409eff;
+  border-color: #c6e2ff;
+  background-color: #ecf5ff;
+}
+
 .time-bar {
   display: flex;
   align-items: center;
