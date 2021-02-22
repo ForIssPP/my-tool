@@ -17,11 +17,13 @@ logger = logging.getLogger('AutoSubmit')
 logger.setLevel(logging.DEBUG)
 ch = logging.StreamHandler()
 ch.setLevel(logging.DEBUG)
+formatter = logging.Formatter("%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s")
+ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 
 class AutoModules:
-    LOG_SPACE_COUNT = 30
+    LOG_SPACE_COUNT = 0
     domain = None
     faker = Faker()
 
@@ -92,16 +94,16 @@ class AutoUploadImage(AutoModules):
         if key_len != paths_len:
             self.logger.warning(f'上传图片的长度与必须的 key 长度不相等: key_len {key_len} != paths_len {paths_len}')
             if key_len > paths_len:
-                file_paths.extends(file_paths[-1] * key_len - paths_len)
+                file_paths.append(file_paths[-1] * (key_len - paths_len))
             else:
                 file_paths = file_paths[:key_len]
-            raise ValueError(f'上传图片的长度与必须的 key 长度相等: {len(self.upload_img_file_keys)} != {len(file_paths)}')
         for f in map(Path, file_paths):
             if not f.exists():
                 raise ValueError(f'文件 {f.name} 不存在')
+        return file_paths
 
     def upload_img(self, file_paths):
-        self.check_file_paths(file_paths)
+        file_paths = self.check_file_paths(file_paths)
         file = Path(file_paths[self.upload_count])
         files = {[self.upload_img_file_keys[self.upload_count]]: (file.name, file.open('rb'))}
         result = self.fetch(self.upload_img_url, files=files)
@@ -109,7 +111,7 @@ class AutoUploadImage(AutoModules):
         return result
 
     def upload_boundary_img(self, file_paths, **kw):
-        self.check_file_paths(file_paths)
+        file_paths = self.check_file_paths(file_paths)
         files = self.create_upload_boundary_img_files(file_paths)
         result = self.fetch(self.upload_img_url, files=files, **kw)
         self.logger.info(f'{"Upload Boundary Img Result".center(self.LOG_SPACE_COUNT)}-> {result.text}')
@@ -157,7 +159,7 @@ class AutoSubmit(AutoLogin, AutoUploadImage):
             result = self.fetch(self.submit_url, json=data)
         else:
             result = self.fetch(self.submit_url, data=data)
-        self.logger.info(f'{"Submit Data".center(self.LOG_SPACE_COUNT)}-> {data}')
+        self.logger.debug(f'{"Submit Data".center(self.LOG_SPACE_COUNT)}-> {data}')
         self.logger.info(f'{"Submit Result".center(self.LOG_SPACE_COUNT)}-> {result.text}')
         return result
 
@@ -270,5 +272,6 @@ class AutoSubmitTemplate(AutoSubmit):
 
     def run(self, file_paths):
         self.login()
+        file_paths = self.check_file_paths(file_paths)
         img_url_list = self.upload_images(file_paths)
         self.submit(self.update_content_type('application/json').get_submit_data(img_url_list), True)

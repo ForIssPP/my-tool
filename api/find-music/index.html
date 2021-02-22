@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta charset="UTF-8" />
+    <title>Translate</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/theme-chalk/index.css" rel="stylesheet" />
+    <link href="./static/index.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="app">
+      <el-row type="flex" align="middle">
+        <el-image style="width: 50px; height: 50px" src="./static/music-logo.png" fit="fill"></el-image>
+        <p class="white title">音乐数据查询</p>
+      </el-row>
+      <el-divider></el-divider>
+      <el-row type="flex" align="middle">
+        <p class="white search-title">搜索:</p>
+        <el-autocomplete
+          style="width: 230px"
+          v-model="search"
+          :fetch-suggestions="querySearch"
+          @select="onSelect"
+          placeholder="周杰伦"
+          value-key="name"
+        >
+          <template slot-scope="{ item }">
+            <p class="search-song">{{ item.name }} - {{ item.author }}</p>
+          </template>
+        </el-autocomplete>
+      </el-row>
+      <el-card class="song-card" v-show="isFind">
+        <el-row slot="header" type="flex" align="middle">{{ author }} - {{ album }} - {{ name }}</el-row>
+        <el-row>
+          <el-col :xs="12" :span="6">
+            <el-image @load="setHeight" ref="albumPicture" style="width: 100%" :src="albumPicture">
+              <div slot="error" class="image-slot">
+                <i class="el-icon-picture-outline"></i>
+              </div>
+            </el-image>
+          </el-col>
+          <el-col class="lcr-box" ref="lrcBox" :xs="12" :span="18">
+            <p class="lrc" v-for="(text, index) in lrcTextList" :key="index" :class="{ active: index === showLrcIndex }">
+              {{ text }}
+            </p>
+          </el-col>
+        </el-row>
+        <el-row class="control-bar" type="flex" justify="center">
+          <el-button :class="{ active: loopPlay }" @click="loopPlay = !loopPlay" icon="el-icon-refresh"></el-button>
+          <el-button v-show="!isPlaying" @click="play" icon="el-icon-video-play"></el-button>
+          <el-button v-show="isPlaying" @click="pause" icon="el-icon-video-pause"></el-button>
+          <el-button @click="download" icon="el-icon-download"></el-button>
+          <span class="time-bar">{{ barCurrentTime }}/{{ barDurationTime }}</span>
+        </el-row>
+        <!-- <el-progress :stroke-width="10" :percentage="progress" :format="format"> </el-progress> -->
+        <el-slider @change="handleChange" v-model="currentTime" :max="duration"></el-slider>
+      </el-card>
+      <audio use-credentials ref="musicPlay" id="play" :src="songSrc"></audio>
+    </div>
+    <script src="https://cdn.bootcss.com/vue/2.6.11/vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/index.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
+    <script src="./static/index.js"></script>
+  </body>
+</html>

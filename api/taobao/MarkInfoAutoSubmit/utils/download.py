@@ -4,12 +4,6 @@ import logging
 
 import requests
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
-logger.addHandler(ch)
-
 
 class DownloadError(Exception):
     pass
@@ -19,7 +13,6 @@ class Download:
     download_dir = Path('assets')
     PNG = b'\xef\xbf\xbdPNG'
     parse_type_re = re.compile(r'(?:(?<=image/)|(?<=\.))(\w+)$')
-    logger = logger
     download_name = None
 
     def __init__(self, url):
@@ -28,7 +21,7 @@ class Download:
         if not self.download_dir.exists():
             self.download_dir.mkdir()
         if self.res.status_code != 200:
-            logger.error(f'{url}下载错误, 返回码为: {self.res.status_code}')
+            logging.error(f'{url}下载错误, 返回码为: {self.res.status_code}')
             raise DownloadError(f'{url}下载错误, 返回码为: {self.res.status_code}')
 
     def parse_suffix(self):
@@ -41,7 +34,7 @@ class Download:
             suffix = bytes(self.res.text[:10], 'utf8')
             if not suffix.find(self.PNG):
                 suffix = 'png'
-        self.logger.info(f'下载类型: {suffix}')
+        logging.info(f'下载类型: {suffix}')
         return suffix
 
     def save(self, key=None):
@@ -49,7 +42,7 @@ class Download:
             key = re.search(r'(\w+)$', self.url).group(0)
         fn = self.download_dir / f'download-{key}.{self.parse_suffix()}'
         if fn.exists():
-            self.logger.warning(f'文件已存在，此操作将会替换该文件')
+            logging.warning('文件已存在，此操作将会替换该文件')
         fn.write_bytes(self.res.content)
         self.download_name = fn
         return str(fn.absolute())

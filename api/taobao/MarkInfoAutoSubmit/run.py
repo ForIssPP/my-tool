@@ -7,6 +7,7 @@ import requests
 from config import mark_param_keys, mark_type_keys, RESTART_INTERVAL, platform_keys, API_URL
 from utils.download import Download, DownloadError
 import pandas
+from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED
 
 logging.getLogger().setLevel(logging.INFO)
 initial_dir = os.getcwd()
@@ -49,7 +50,7 @@ def fetch_local_file_paths():
 def fetch_api_mark_info():
     url = API_URL
     res = requests.get(url).json()
-    # script = get_script(api_key)
+    logging.info(f'result -> {res}')
     if res['status'] and res['data']:
         return res
 
@@ -59,39 +60,43 @@ def submit(api_key, account, password, file_paths, *params):
     if not script:
         raise ValueError(f'Script {api_key} 不存在')
 
+    logging.info('**********************************')
     instance = script(account, password, *params)
     instance.logger.setLevel(logging.INFO)
-    logging.info(f'开始提交{api_key}平台...')
+    logging.info(f'---- 开始提交{api_key}平台... ----')
     instance.run(file_paths)
     logging.info(f'{api_key}平台提交成功')
 
+def main(account_info_list, auto_mark=True):
+    executor = ThreadPoolExecutor(max_workers=8)
 
-def run(account_info_list, auto_mark=True):
-    while True:
-        if auto_mark:
+    if auto_mark:
+        while True:
             res = fetch_api_mark_info()
             keys = mark_param_keys['auto']
             for data in res['data']:
                 wwid, content, images = data[keys[0]], data[keys[1]], data[keys[2]]
                 file_paths = []
-                while images:
-                    logging.info('\n开始下载文件')
-                    try:
-                        file_paths.append(Download(images.pop()).save())
-                    except DownloadError as err:
-                        logging.exception(err)
-                        logging.error('下载文件失败')
+                logging.info('开始下载文件')
+                for name in executor.map(lambda img: Download(img).save(), images):
+                    logging.info(f'文件{name}下载成功')
+                    file_paths.append(name)
                 if not file_paths:
                     raise ValueError('文件列表为空, 请检查文件下载情况')
                 for info in account_info_list:
                     if info.all():
                         api_key = info[0]
-                        submit(*info, file_paths, mark_param_keys[api_key], wwid, mark_type_keys[api_key], content)
-        else:
-            for api_key, account, psd in account_info_list:
-                submit(api_key, account, psd, fetch_local_file_paths())
-        logging.info(f'开始等待 {RESTART_INTERVAL}s️... ')
-        sleep(RESTART_INTERVAL)
+                        try:
+                            submit(*info, file_paths, mark_param_keys[api_key], wwid, mark_type_keys[api_key], content)
+                        except Exception as err:
+                            logging.exception(err)
+                            logging.error(f'任务失败，参数信息: {info}')
+
+            logging.info(f'开始等待 {RESTART_INTERVAL}s️... ')
+            sleep(RESTART_INTERVAL)
+    else:
+        for api_key, account, psd in account_info_list:
+            submit(api_key, account, psd, fetch_local_file_paths())
 
 
 def parse_account_info(info):
@@ -105,8 +110,4 @@ def parse_account_info(info):
 
 
 if __name__ == '__main__':
-    try:
-        run(list(map(parse_account_info, pandas.read_csv('./assets/account_info.csv').dropna(axis=1).values)))
-    except Exception as err:
-        logging.error('任务已失败')
-        logging.exception(err)
+    main(list(map(parse_account_info, pandas.read_csv('./assets/account_info.csv').dropna(axis=1).values)))
