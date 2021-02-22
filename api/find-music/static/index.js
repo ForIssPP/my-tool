@@ -104,15 +104,24 @@ new Vue({
       this.isPlaying = false;
     },
     async fetchLRC() {
+      this.lrcTextList = [];
       if (this.songId) {
-        const findTitleRE = /\[ti:(.+?)\]/g;
-        const findAuthorRE = /\[ar:(.+?)\]/g;
-        const parseLyricRE = /\]([^\[\]]+)\[/g;
-        const data = await this.fetch('select', this.songId);
-        const title = findTitleRE.exec(data.lrcText);
-        const author = findAuthorRE.exec(data.lrcText);
-        this.lrcText = data.lrcText;
-        this.lrcTextList.push(title[1], author[1], ...data.lrcText.match(parseLyricRE).map(str => str.slice(1, str.length - 1)));
+        try {
+          const findTitleRE = /\[ti:(.+?)\]/g;
+          const findAuthorRE = /\[ar:(.+?)\]/g;
+          const parseLyricRE = /\]([^\[\]]+)\[/g;
+          const data = await this.fetch('select', this.songId);
+          const title = findTitleRE.exec(data.lrcText);
+          const author = findAuthorRE.exec(data.lrcText);
+          this.lrcText = data.lrcText;
+          this.lrcTextList.push(
+            title[1],
+            author[1],
+            ...data.lrcText.match(parseLyricRE).map(str => str.slice(1, str.length - 1))
+          );
+        } catch (error) {
+          this.lrcTextList = ['解析失败, 暂无歌词~'];
+        }
       }
     },
     setHeight() {
