@@ -35,7 +35,7 @@
       </el-row>
       <el-card class="song-card" v-show="isFind">
         <el-row slot="header" type="flex" align="middle">{{ author }} - {{ album }} - {{ name }}</el-row>
-        <el-row>
+        <el-row :gutter="10">
           <el-col :xs="12" :span="6">
             <el-image @load="setHeight" ref="albumPicture" style="width: 100%" :src="albumPicture">
               <div slot="error" class="image-slot">
