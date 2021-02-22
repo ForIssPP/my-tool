@@ -36,7 +36,7 @@ new Vue({
           method: 'POST'
         });
         const data = await res.json();
-        if (!data.error && data.length) {
+        if (!data.error) {
           localStorage.setItem(url + key, JSON.stringify(data));
           return data;
         }
