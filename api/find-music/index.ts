@@ -72,20 +72,24 @@ function createServer() {
       } else {
         const songs = await find9KuMusic(music);
         if (songs.length) {
-          const sqlRes = await sqlQuery(
-            'INSERT INTO musics (id, name, author, authorPicture, album, albumPicture, src) VALUES ?',
-            songs.map(({ id, name, author, authorPicture, album, albumPicture, src }) => [
-              parseInt(id),
-              name,
-              author,
-              authorPicture,
-              album,
-              albumPicture,
-              src
-            ])
-          );
-          console.log(sqlRes.message);
           res.json(songs);
+          try {
+            const sqlRes = await sqlQuery(
+              'INSERT INTO musics (id, name, author, authorPicture, album, albumPicture, src) VALUES ?',
+              songs.map(({ id, name, author, authorPicture, album, albumPicture, src }) => [
+                parseInt(id),
+                name,
+                author,
+                authorPicture,
+                album,
+                albumPicture,
+                src
+              ])
+            );
+            console.log(sqlRes.message);
+          } catch (error) {
+            console.error(error);
+          }
         } else {
           res.json({ error: 1, music });
         }
