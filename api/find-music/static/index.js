@@ -27,6 +27,44 @@ new Vue({
       return this.getTime(this.duration);
     }
   },
+  mounted() {
+    const audioElm = this.$refs.musicPlay;
+    audioElm.addEventListener('canplay', () => {
+      this.play();
+    });
+    audioElm.addEventListener(
+      'timeupdate',
+      _.throttle(() => {
+        if (!this.lock) {
+          this.currentTime = parseInt(audioElm.currentTime);
+        }
+        if (audioElm.readyState > 0) {
+          this.duration = parseInt(audioElm.duration);
+          this.progress = (this.currentTime / this.duration) * 100;
+        }
+        if (this.duration === this.currentTime) {
+          if (this.loopPlay) {
+            setTimeout(() => {
+              this.play();
+            }, 500);
+          } else {
+            this.isPlaying = false;
+          }
+        }
+        const re = new RegExp(`\\[${this.barCurrentTime}.[\\d\\.]+\\]([^\\[\\]\\d]+)\\[`);
+        if (re.test(this.lrcText)) {
+          if (this.lrcTextList.indexOf(re.exec(this.lrcText)[1]) > -1) {
+            const el = this.$refs.lrcBox.$el;
+            this.showLrcIndex = this.lrcTextList.indexOf(re.exec(this.lrcText)[1]);
+            const scrollTop = parseInt(el.querySelectorAll('p')[this.showLrcIndex].offsetTop - el.offsetHeight / 2);
+            if (scrollTop > 0) {
+              $(el).animate({ scrollTop }, 300);
+            }
+          }
+        }
+      }, 300)
+    );
+  },
   methods: {
     async fetch(url, key) {
       if (localStorage.getItem(url + key)) {
@@ -52,7 +90,6 @@ new Vue({
       cb(await this.fetch('find', queryString || '周杰伦'));
     },
     onSelect(item) {
-      const audioElm = this.$refs.musicPlay;
       this.isFind = true;
       this.album = item.album;
       this.name = item.name;
@@ -62,38 +99,6 @@ new Vue({
       this.songSrc = item.src;
       this.songId = item.id;
       this.fetchLRC();
-      audioElm.addEventListener('canplay', () => {
-        this.play();
-      });
-      audioElm.addEventListener(
-        'timeupdate',
-        _.throttle(() => {
-          if (!this.lock) {
-            this.currentTime = parseInt(audioElm.currentTime);
-          }
-          if (audioElm.readyState > 0) {
-            this.duration = parseInt(audioElm.duration);
-            this.progress = (this.currentTime / this.duration) * 100;
-          }
-          if (this.duration === this.currentTime) {
-            if (this.loopPlay) {
-              setTimeout(() => {
-                this.play();
-              }, 500);
-            } else {
-              this.isPlaying = false;
-            }
-          }
-          const re = new RegExp(`\\[${this.barCurrentTime}.[\\d\\.]+\\]([^\\[\\]\\d]+)\\[`);
-          if (re.test(this.lrcText)) {
-            if (this.lrcTextList.indexOf(re.exec(this.lrcText)[1]) > -1) {
-              const el = this.$refs.lrcBox.$el;
-              this.showLrcIndex = this.lrcTextList.indexOf(re.exec(this.lrcText)[1]);
-              el.scrollTo(0, el.querySelectorAll('p')[this.showLrcIndex].offsetTop - el.offsetHeight / 2);
-            }
-          }
-        }, 300)
-      );
     },
     play() {
       this.$refs.musicPlay.play();
