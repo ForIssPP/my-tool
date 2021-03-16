@@ -36,7 +36,7 @@ const CONFIG: Config = JSON.parse(fs.readFileSync(join(__dirname, 'config.json')
 const connection = mysql.createConnection(CONFIG.db);
 const sqlQuery = <T = { message: string }>(sql: string, ...args: any[]) =>
   new Promise<T>((resolve, reject) =>
-    connection.query(sql, ...args, (error: MysqlError, result: any) => (error ? reject(error) : resolve(result)))
+    connection.query(sql, args, (error: MysqlError, result: any) => (error ? reject(error) : resolve(result)))
   );
 connection.connect(err => {
   if (err) {
@@ -75,7 +75,7 @@ function createServer() {
           res.json(songs);
           try {
             const sqlRes = await sqlQuery(
-              'INSERT INTO musics (id, name, author, authorPicture, album, albumPicture, src) VALUES ?',
+              'INSERT IGNORE INTO musics (id, name, author, authorPicture, album, albumPicture, src) VALUES ?',
               songs.map(({ id, name, author, authorPicture, album, albumPicture, src }) => [
                 parseInt(id),
                 name,
